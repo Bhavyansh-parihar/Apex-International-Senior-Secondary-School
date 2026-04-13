@@ -1,0 +1,947 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Apex International Senior Secondary School - Admin Portal Login. Secure access for school staff.">
+    <title>Admin Login — Apex International Senior Secondary School</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <style>
+        /* Login-specific particles background */
+        .login-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .login-particles .particle {
+            position: absolute;
+            border-radius: 50%;
+            animation: floatParticle linear infinite;
+            opacity: 0.12;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.12;
+            }
+
+            90% {
+                opacity: 0.12;
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .login-error {
+            background: rgba(251, 113, 133, 0.1);
+            border: 1px solid rgba(251, 113, 133, 0.3);
+            color: var(--accent-rose);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.8125rem;
+            margin-bottom: 16px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .login-error.show {
+            display: flex;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 0.8125rem;
+            color: var(--text-muted);
+        }
+
+        .login-footer a {
+            color: var(--primary-light);
+        }
+
+        .demo-credentials {
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            margin-top: 20px;
+            font-size: 0.8125rem;
+        }
+
+        .demo-credentials h4 {
+            color: var(--primary-light);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .demo-credentials p {
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+        }
+
+        .demo-credentials p span {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            10%,
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: translateX(-5px);
+            }
+
+            20%,
+            40%,
+            60%,
+            80% {
+                transform: translateX(5px);
+            }
+        }
+
+        /* ================================
+           CAMERA VERIFICATION SECTION
+           ================================ */
+        .camera-section {
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .camera-label {
+            display: block;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .camera-container {
+            position: relative;
+            width: 100%;
+            max-width: 280px;
+            margin: 0 auto;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            transition: border-color 0.3s;
+        }
+
+        .camera-container.captured {
+            border-color: rgba(52, 211, 153, 0.6);
+        }
+
+        .camera-container video,
+        .camera-container canvas,
+        .camera-container img {
+            width: 100%;
+            display: block;
+            border-radius: var(--radius-md);
+        }
+
+        .camera-container canvas {
+            display: none;
+        }
+
+        .camera-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            gap: 8px;
+        }
+
+        .camera-placeholder .cam-icon {
+            font-size: 2.5rem;
+            opacity: 0.5;
+        }
+
+        .camera-btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+            justify-content: center;
+        }
+
+        .camera-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .camera-btn-start {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #fff;
+        }
+
+        .camera-btn-capture {
+            background: linear-gradient(135deg, var(--accent-emerald), #10b981);
+            color: #fff;
+            display: none;
+        }
+
+        .camera-btn-retake {
+            background: linear-gradient(135deg, var(--accent-amber), #f59e0b);
+            color: #fff;
+            display: none;
+        }
+
+        .camera-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .verification-badge {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 10px;
+            padding: 8px 14px;
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+            font-weight: 600;
+        }
+
+        .verification-badge.success {
+            display: flex;
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            color: var(--accent-emerald);
+        }
+
+        .verification-badge.error {
+            display: flex;
+            background: rgba(251, 113, 133, 0.1);
+            border: 1px solid rgba(251, 113, 133, 0.3);
+            color: var(--accent-rose);
+        }
+
+        /* Lockout warning */
+        .lockout-warning {
+            background: rgba(251, 113, 133, 0.15);
+            border: 1px solid rgba(251, 113, 133, 0.4);
+            color: var(--accent-rose);
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            text-align: center;
+            margin-bottom: 16px;
+            display: none;
+            font-size: 0.8125rem;
+        }
+
+        .lockout-warning.show {
+            display: block;
+        }
+
+        .lockout-warning .lockout-timer {
+            font-size: 1.5rem;
+            font-weight: 800;
+            display: block;
+            margin-top: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .attempts-left {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        .attempts-left strong {
+            color: var(--accent-amber);
+        }
+
+        /* Security info badges */
+        .security-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+            justify-content: center;
+        }
+
+        .security-chip {
+            font-size: 0.68rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated particles -->
+    <div class="login-particles" id="particles"></div>
+
+    <div class="login-page">
+        <div class="login-container">
+            <div class="login-logo">
+                <div class="logo-icon">A</div>
+                <h1>Admin Portal</h1>
+                <p>Apex International Senior Secondary School</p>
+            </div>
+
+            <!-- Security info -->
+            <div class="security-info">
+                <div class="security-chip">🔐 Secure Login</div>
+                <div class="security-chip">📷 Camera Required</div>
+                <div class="security-chip">🛡️ Brute Force Protection</div>
+            </div>
+
+            <!-- Lockout Warning -->
+            <div class="lockout-warning" id="lockoutWarning">
+                🔒 Account temporarily locked due to too many failed attempts.
+                <span class="lockout-timer" id="lockoutTimer">--:--</span>
+            </div>
+
+            <div class="login-error" id="loginError">
+                <span>❌</span>
+                <span id="loginErrorMsg">Invalid email or password</span>
+            </div>
+
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="apexschoolsanchore2018@gmail.com" required
+                        autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required
+                            autocomplete="current-password">
+                        <button type="button" class="password-toggle" onclick="togglePassword()"
+                            aria-label="Toggle password visibility">👁️</button>
+                    </div>
+                </div>
+
+                <!-- Camera Verification Section -->
+                <div class="camera-section">
+                    <span class="camera-label">📷 Identity Verification (Required)</span>
+                    <div class="camera-container" id="cameraContainer">
+                        <div class="camera-placeholder" id="cameraPlaceholder">
+                            <span class="cam-icon">📸</span>
+                            <span>Camera access required for login</span>
+                        </div>
+                        <video id="cameraVideo" autoplay playsinline style="display:none;"></video>
+                        <canvas id="cameraCanvas"></canvas>
+                        <img id="capturedPhoto" style="display:none;" alt="Captured verification photo">
+                    </div>
+                    <div class="camera-btn-group">
+                        <button type="button" class="camera-btn camera-btn-start" id="btnStartCamera"
+                            onclick="startCamera()">📷 Start Camera</button>
+                        <button type="button" class="camera-btn camera-btn-capture" id="btnCapture"
+                            onclick="capturePhoto()">📸 Capture Photo</button>
+                        <button type="button" class="camera-btn camera-btn-retake" id="btnRetake"
+                            onclick="retakePhoto()">🔄 Retake</button>
+                    </div>
+                    <div class="verification-badge" id="verificationBadge"></div>
+                </div>
+
+                <div class="form-check">
+                    <input type="checkbox" id="rememberMe" checked>
+                    <label for="rememberMe">Remember me</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full btn-lg" id="loginBtn">
+                    🔐 Sign In
+                </button>
+
+                <div class="attempts-left" id="attemptsInfo" style="display:none;">
+                    Attempts remaining: <strong id="attemptsCount">5</strong>/5
+                </div>
+            </form>
+
+
+
+            <div class="login-footer">
+                <a href="../index.html">← Back to School Website</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Firebase compat SDK (must load BEFORE admin-data.js) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+
+    <script src="js/admin-data.js"></script>
+    <script>
+        // ====================================
+        // SECURITY CONSTANTS
+        // ====================================
+        const MAX_ATTEMPTS = 5;
+        const LOCKOUT_DURATION = 15 * 60 * 1000; // 15 minutes
+        const LOCKOUT_KEY = 'admin_login_lockout';
+        const ATTEMPTS_KEY = 'admin_login_attempts';
+        const ACCESS_LOG_KEY = 'admin_access_logs';
+
+        let cameraStream = null;
+        let capturedPhotoData = null;
+        let userGeoLocation = null;
+        let userIPAddress = 'Fetching...';
+
+
+        // ====================================
+        // BRUTE FORCE PROTECTION
+        // ====================================
+        function getAttempts() {
+            try {
+                return JSON.parse(localStorage.getItem(ATTEMPTS_KEY)) || { count: 0, timestamps: [] };
+            } catch { return { count: 0, timestamps: [] }; }
+        }
+
+        function setAttempts(data) {
+            localStorage.setItem(ATTEMPTS_KEY, JSON.stringify(data));
+        }
+
+        function getLockout() {
+            try {
+                return JSON.parse(localStorage.getItem(LOCKOUT_KEY)) || null;
+            } catch { return null; }
+        }
+
+        function setLockout() {
+            localStorage.setItem(LOCKOUT_KEY, JSON.stringify({
+                lockedAt: Date.now(),
+                expiresAt: Date.now() + LOCKOUT_DURATION
+            }));
+        }
+
+        function clearLockout() {
+            localStorage.removeItem(LOCKOUT_KEY);
+            localStorage.removeItem(ATTEMPTS_KEY);
+        }
+
+        function isLockedOut() {
+            const lockout = getLockout();
+            if (!lockout) return false;
+            if (Date.now() >= lockout.expiresAt) {
+                clearLockout();
+                return false;
+            }
+            return true;
+        }
+
+        function getRemainingLockoutTime() {
+            const lockout = getLockout();
+            if (!lockout) return 0;
+            return Math.max(0, lockout.expiresAt - Date.now());
+        }
+
+        function recordFailedAttempt() {
+            const attempts = getAttempts();
+            attempts.count++;
+            attempts.timestamps.push(Date.now());
+            setAttempts(attempts);
+
+            if (attempts.count >= MAX_ATTEMPTS) {
+                setLockout();
+                showLockout();
+            }
+
+            updateAttemptsDisplay();
+        }
+
+        function updateAttemptsDisplay() {
+            const attempts = getAttempts();
+            const remaining = Math.max(0, MAX_ATTEMPTS - attempts.count);
+            const attemptsInfo = document.getElementById('attemptsInfo');
+            const attemptsCount = document.getElementById('attemptsCount');
+
+            if (attempts.count > 0) {
+                attemptsInfo.style.display = 'block';
+                attemptsCount.textContent = remaining;
+                if (remaining <= 2) {
+                    attemptsCount.style.color = 'var(--accent-rose)';
+                }
+            }
+        }
+
+        let lockoutInterval = null;
+
+        function showLockout() {
+            const warningEl = document.getElementById('lockoutWarning');
+            const formEl = document.getElementById('loginForm');
+            warningEl.classList.add('show');
+            formEl.style.pointerEvents = 'none';
+            formEl.style.opacity = '0.4';
+
+            lockoutInterval = setInterval(() => {
+                const remaining = getRemainingLockoutTime();
+                if (remaining <= 0) {
+                    clearInterval(lockoutInterval);
+                    clearLockout();
+                    warningEl.classList.remove('show');
+                    formEl.style.pointerEvents = '';
+                    formEl.style.opacity = '';
+                    document.getElementById('attemptsInfo').style.display = 'none';
+                    return;
+                }
+                const mins = Math.floor(remaining / 60000);
+                const secs = Math.floor((remaining % 60000) / 1000);
+                document.getElementById('lockoutTimer').textContent =
+                    `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // ====================================
+        // CAMERA & GEOLOCATION
+        // ====================================
+        async function startCamera() {
+            try {
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'user', width: 320, height: 240 }
+                });
+
+                const video = document.getElementById('cameraVideo');
+                video.srcObject = cameraStream;
+                video.style.display = 'block';
+                document.getElementById('cameraPlaceholder').style.display = 'none';
+                document.getElementById('btnStartCamera').style.display = 'none';
+                document.getElementById('btnCapture').style.display = 'inline-flex';
+
+            } catch (err) {
+                console.error('Camera error:', err);
+                const badge = document.getElementById('verificationBadge');
+                badge.className = 'verification-badge error';
+                badge.innerHTML = '❌ Camera access denied. Cannot login without verification.';
+                badge.style.display = 'flex';
+            }
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('cameraVideo');
+            const canvas = document.getElementById('cameraCanvas');
+            const img = document.getElementById('capturedPhoto');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+
+            capturedPhotoData = canvas.toDataURL('image/jpeg', 0.7);
+            img.src = capturedPhotoData;
+            img.style.display = 'block';
+            video.style.display = 'none';
+
+            // Stop camera stream
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+
+            document.getElementById('btnCapture').style.display = 'none';
+            document.getElementById('btnRetake').style.display = 'inline-flex';
+            document.getElementById('cameraContainer').classList.add('captured');
+
+            const badge = document.getElementById('verificationBadge');
+            badge.className = 'verification-badge success';
+            badge.innerHTML = '✅ Photo captured — identity verification ready';
+        }
+
+        function retakePhoto() {
+            capturedPhotoData = null;
+
+            const img = document.getElementById('capturedPhoto');
+            img.style.display = 'none';
+            img.src = '';
+
+            document.getElementById('cameraContainer').classList.remove('captured');
+            document.getElementById('btnRetake').style.display = 'none';
+            document.getElementById('verificationBadge').style.display = 'none';
+
+            startCamera();
+        }
+
+        // Get user IP address
+        async function fetchIPAddress() {
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                userIPAddress = data.ip;
+            } catch {
+                userIPAddress = 'Unknown';
+            }
+        }
+
+        // Get user geolocation
+        function fetchGeolocation() {
+            return new Promise((resolve) => {
+                if (!navigator.geolocation) {
+                    resolve({ lat: 'N/A', lon: 'N/A', label: 'Not supported' });
+                    return;
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        resolve({
+                            lat: pos.coords.latitude.toFixed(6),
+                            lon: pos.coords.longitude.toFixed(6),
+                            label: `${pos.coords.latitude.toFixed(4)}°, ${pos.coords.longitude.toFixed(4)}°`
+                        });
+                    },
+                    () => {
+                        resolve({ lat: 'N/A', lon: 'N/A', label: 'Permission denied' });
+                    },
+                    { timeout: 10000 }
+                );
+            });
+        }
+
+        // ====================================
+        // ACCESS LOG
+        // ====================================
+        function getAccessLogs() {
+            try { return JSON.parse(localStorage.getItem(ACCESS_LOG_KEY)) || []; }
+            catch { return []; }
+        }
+
+        function saveAccessLog(entry) {
+            // 1. Save to localStorage (this device)
+            const logs = getAccessLogs();
+            logs.unshift(entry);
+            if (logs.length > 100) logs.length = 100;
+            localStorage.setItem(ACCESS_LOG_KEY, JSON.stringify(logs));
+
+            // 2. Save to Firestore via REST API (works across ALL devices)
+            const PROJECT_ID = 'apex-international-schoo-b6d46';
+            const url = `https://firestore.googleapis.com/v1/projects/${PROJECT_ID}/databases/(default)/documents/admin_access_logs`;
+            const toStrVal = v => ({ stringValue: String(v ?? '') });
+            const toBoolVal = v => ({ booleanValue: Boolean(v) });
+            const doc = {
+                fields: {
+                    id: toStrVal(entry.id),
+                    email: toStrVal(entry.email),
+                    userName: toStrVal(entry.userName),
+                    ipAddress: toStrVal(entry.ipAddress),
+                    geolocation: toStrVal(entry.geolocation),
+                    geoLat: toStrVal(entry.geoLat),
+                    geoLon: toStrVal(entry.geoLon),
+                    photo: toStrVal(entry.photo),
+                    success: toBoolVal(entry.success),
+                    timestamp: toStrVal(entry.timestamp),
+                    userAgent: toStrVal(entry.userAgent)
+                }
+            };
+            fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(doc)
+            }).catch(err => console.warn('Access log Firestore save failed:', err));
+
+            // 3. Save via SDK if available
+            if (typeof db !== 'undefined') {
+                const { photo, ...entryNoPhoto } = entry; // exclude large photo from activity log
+                db.collection('admin_access_logs').add(entry)
+                    .catch(err => console.warn('Access log SDK save failed:', err));
+            }
+        }
+
+        // ====================================
+        // LOGIN HANDLER  (Firebase Auth)
+        // ====================================
+        async function handleLogin(e) {
+            e.preventDefault();
+
+            // Check lockout
+            if (isLockedOut()) {
+                showLockout();
+                return;
+            }
+
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const errorEl = document.getElementById('loginError');
+            const errorMsg = document.getElementById('loginErrorMsg');
+            const btn = document.getElementById('loginBtn');
+
+            // ── Step 1: Photo verification (must be captured first) ──
+            if (!capturedPhotoData) {
+                errorMsg.textContent = '📷 You must capture a verification photo before signing in.';
+                errorEl.classList.add('show');
+                const badge = document.getElementById('verificationBadge');
+                badge.className = 'verification-badge error';
+                badge.innerHTML = '❌ Camera photo required to login';
+                badge.style.display = 'flex';
+                return;
+            }
+
+            errorEl.classList.remove('show');
+            btn.innerHTML = '⏳ Verifying...';
+            btn.disabled = true;
+
+            // ── Step 2: Geolocation (mandatory — blocks if denied) ──
+            btn.innerHTML = '📍 Getting location...';
+            const geo = await fetchGeolocation();
+            userGeoLocation = geo;
+
+            if (geo.lat === 'N/A') {
+                errorMsg.textContent = '📍 Location access is required to sign in. Please allow location and try again.';
+                errorEl.classList.add('show');
+                btn.innerHTML = '🔐 Sign In';
+                btn.disabled = false;
+                return;
+            }
+
+            // ── Step 3: Authenticate ──
+            btn.innerHTML = '🔐 Authenticating...';
+            try {
+                let adminProfile = null;
+                let authUid = '';
+
+                // --- Strategy A: Firebase Authentication ---
+                try {
+                    const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                    authUid = userCredential.user.uid;
+
+                    // Look up admin profile in Firestore
+                    btn.innerHTML = '🔍 Verifying profile...';
+                    const profileSnap = await db.collection('admin_users')
+                        .where('email', '==', email).limit(1).get();
+
+                    if (!profileSnap.empty) {
+                        const profileDoc = profileSnap.docs[0];
+                        adminProfile = { id: profileDoc.id, ...profileDoc.data() };
+                    } else {
+                        await auth.signOut();
+                        throw { code: 'auth/no-profile', message: 'No admin profile found for this account. Contact your Super Admin.' };
+                    }
+                } catch (authErr) {
+                    // If error is explicitly "no profile", re-throw immediately
+                    if (authErr.code === 'auth/no-profile') throw authErr;
+
+                    console.warn('Firebase Auth failed, trying Firestore fallback:', authErr.code || authErr.message);
+
+                    // --- Strategy B: Firestore-based auth fallback ---
+                    btn.innerHTML = '🔍 Verifying credentials...';
+                    adminProfile = await AdminDB.authenticateAsync(email, password);
+
+                    if (!adminProfile) {
+                        // Neither Firebase Auth nor Firestore auth worked
+                        throw authErr; // re-throw original Firebase Auth error
+                    }
+                    // Firestore auth succeeded
+                    authUid = 'firestore-' + adminProfile.id;
+                }
+
+                // ── Step 4: Validate profile status ──
+                if (adminProfile.status === 'Inactive') {
+                    try { await auth.signOut(); } catch (_) { }
+                    throw { code: 'auth/user-disabled', message: 'Your account has been deactivated. Contact your Super Admin.' };
+                }
+
+                // Build & save access log
+                const logEntry = {
+                    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 9),
+                    email: email,
+                    uid: authUid,
+                    userName: adminProfile.name,
+                    ipAddress: userIPAddress,
+                    geolocation: geo.label,
+                    geoLat: geo.lat,
+                    geoLon: geo.lon,
+                    photo: capturedPhotoData,
+                    success: true,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent
+                };
+                saveAccessLog(logEntry);
+
+                // Store session (includes permissions)
+                const sessionUser = { ...adminProfile, uid: authUid };
+                clearLockout();
+                AdminDB.setSession(sessionUser);
+                AdminDB.logActivity('Login', `${adminProfile.name} logged in (IP: ${userIPAddress}, Location: ${geo.label})`);
+
+                window.location.href = 'index.html';
+
+            } catch (err) {
+                console.error('Login failed:', err);
+
+                // Log failed attempt
+                const logEntry = {
+                    id: Date.now().toString(36) + Math.random().toString(36).substr(2, 9),
+                    email: email,
+                    uid: '',
+                    userName: 'Unknown',
+                    ipAddress: userIPAddress,
+                    geolocation: geo.label,
+                    geoLat: geo.lat,
+                    geoLon: geo.lon,
+                    photo: capturedPhotoData,
+                    success: false,
+                    timestamp: new Date().toISOString(),
+                    userAgent: navigator.userAgent
+                };
+                saveAccessLog(logEntry);
+
+                recordFailedAttempt();
+
+                // User-friendly error messages
+                let friendlyMsg = 'Invalid email or password.';
+                if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+                    friendlyMsg = 'Invalid email or password.';
+                } else if (err.code === 'auth/no-profile') {
+                    friendlyMsg = err.message;
+                } else if (err.code === 'auth/too-many-requests') {
+                    friendlyMsg = 'Too many failed attempts. Try again later.';
+                } else if (err.code === 'auth/user-disabled') {
+                    friendlyMsg = err.message || 'This account has been disabled. Contact your administrator.';
+                } else if (err.code === 'auth/network-request-failed') {
+                    friendlyMsg = 'Network error. Check your connection and try again.';
+                } else if (err.code === 'permission-denied' || err.code === 'auth/configuration-not-found') {
+                    friendlyMsg = 'Access denied. Firebase rules may need to be updated.';
+                } else if (err.message) {
+                    friendlyMsg = err.message;
+                }
+
+                const remaining = Math.max(0, MAX_ATTEMPTS - getAttempts().count);
+                errorMsg.textContent = `${friendlyMsg} ${remaining} attempt(s) remaining.`;
+                errorEl.classList.add('show');
+                btn.innerHTML = '🔐 Sign In';
+                btn.disabled = false;
+
+                // Shake animation
+                const container = document.querySelector('.login-container');
+                container.style.animation = 'none';
+                container.offsetHeight;
+                container.style.animation = 'shake 0.5s ease';
+            }
+        }
+
+        function togglePassword() {
+            const input = document.getElementById('loginPassword');
+            const btn = document.querySelector('.password-toggle');
+            if (input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁️';
+            }
+        }
+
+        // Generate floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const colors = ['var(--primary)', 'var(--accent-cyan)', 'var(--accent-emerald)', 'var(--accent-violet)'];
+
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                const size = Math.random() * 8 + 3;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
+                particle.style.animationDelay = (Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // ====================================
+        // INITIALIZATION
+        // ====================================
+        (function init() {
+            createParticles();
+            fetchIPAddress();
+
+            // Check lockout state
+            if (isLockedOut()) showLockout();
+            updateAttemptsDisplay();
+
+            // ----- Debug: Log helpful diagnostic info -----
+            console.log('=== LOGIN PAGE DEBUG ===');
+            console.log('Firebase app initialized:', firebase.apps.length > 0);
+            console.log('Firestore (db):', typeof db !== 'undefined' ? 'available' : 'MISSING');
+            console.log('Auth (auth):', typeof auth !== 'undefined' ? 'available' : 'MISSING');
+            console.log('Storage (storage):', typeof storage !== 'undefined' ? 'available' : 'MISSING');
+            console.log('Lockout active:', isLockedOut());
+            console.log('Failed attempts:', getAttempts().count);
+
+            // Test Firestore connectivity
+            if (typeof db !== 'undefined') {
+                db.collection('admin_users').limit(1).get()
+                    .then(snap => console.log('Firestore admin_users readable:', !snap.empty ? 'YES (' + snap.size + ' docs)' : 'YES (empty collection)'))
+                    .catch(err => console.error('Firestore admin_users READ BLOCKED:', err.code, err.message));
+            }
+
+            // If Firebase Auth already has a valid session, skip the login page
+            auth.onAuthStateChanged(function (fbUser) {
+                console.log('Auth state:', fbUser ? 'signed in as ' + fbUser.email : 'not signed in');
+                if (fbUser && AdminDB.getCurrentUser()) {
+                    // Both Firebase token AND local session exist → already logged in
+                    window.location.href = 'index.html';
+                }
+            });
+
+            // Hidden lockout reset: click the lock icon in the lockout warning 5 times
+            let resetClicks = 0;
+            const lockoutEl = document.getElementById('lockoutWarning');
+            if (lockoutEl) {
+                lockoutEl.addEventListener('click', () => {
+                    resetClicks++;
+                    if (resetClicks >= 5) {
+                        clearLockout();
+                        lockoutEl.classList.remove('show');
+                        document.getElementById('loginForm').style.pointerEvents = '';
+                        document.getElementById('loginForm').style.opacity = '';
+                        document.getElementById('attemptsInfo').style.display = 'none';
+                        resetClicks = 0;
+                        console.log('Lockout manually cleared!');
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,682 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Apex International Senior Secondary School calendar - vacation schedule, upcoming events, bell schedule, and important academic dates for 2026-27.">
+    <title>Calendar - Apex International Senior Secondary School</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Interactive Calendar Styles */
+        .visual-calendar {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            max-width: 700px;
+            margin: 0 auto 40px;
+        }
+
+        .cal-header {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 24px;
+        }
+
+        .cal-header h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .cal-header button {
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: #fff;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cal-header button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .cal-weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: #f0f4ff;
+            padding: 10px 16px;
+            gap: 4px;
+        }
+
+        .cal-weekdays span {
+            text-align: center;
+            font-weight: 700;
+            color: #1e3a8a;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .cal-days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            padding: 12px 16px 16px;
+            gap: 4px;
+        }
+
+        .cal-day {
+            text-align: center;
+            padding: 10px 4px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: default;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .cal-day.empty {
+            visibility: hidden;
+        }
+
+        .cal-day.today {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+            font-weight: 800;
+            box-shadow: 0 3px 10px rgba(245, 158, 11, 0.3);
+        }
+
+        .cal-day.holiday {
+            background: #fef3c7;
+            color: #92400e;
+            font-weight: 600;
+        }
+
+        .cal-day.event {
+            background: #dbeafe;
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        .cal-day.holiday.today,
+        .cal-day.event.today {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #fff;
+        }
+
+        .cal-day:not(.empty):hover {
+            transform: scale(1.15);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cal-legend {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 12px 16px 18px;
+            flex-wrap: wrap;
+        }
+
+        .cal-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            color: #6b7280;
+        }
+
+        .cal-legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        .cal-legend-dot.today-dot {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .cal-legend-dot.holiday-dot {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+        }
+
+        .cal-legend-dot.event-dot {
+            background: #dbeafe;
+            border: 1px solid #93c5fd;
+        }
+
+        /* Bell Schedule Styles */
+        .bell-schedule-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .bell-schedule-table thead th {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: #fff;
+            padding: 14px 16px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .bell-schedule-table tbody td {
+            padding: 12px 16px;
+            font-size: 0.88rem;
+            border-bottom: 1px solid #e5e7eb;
+            color: #374151;
+        }
+
+        .bell-schedule-table tbody tr:nth-child(even) td {
+            background: #f9fafb;
+        }
+
+        .bell-schedule-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .bell-schedule-table tbody tr:hover td {
+            background: #eef2ff;
+        }
+
+        .bell-schedule-table .period-label {
+            font-weight: 600;
+            color: #1e3a8a;
+        }
+
+        .bell-schedule-table .break-row td {
+            background: #fef3c7 !important;
+            font-weight: 600;
+            color: #92400e;
+        }
+
+        .bell-table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="#mainContent" class="skip-to-content">Skip to main content</a>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-content">
+                <div class="top-bar-left"><a href="tel:+919256151729">📞 +91 925 615 1729</a><a
+                        href="mailto:apexschoolsanchore2018@gmail.com">✉️ apexschoolsanchore2018@gmail.com</a><span>📍 NH68, Badsam Bypass Road, Sanchore, Rajasthan - 343041</span></div>
+                <div class="top-bar-right">
+                    <div class="social-links"><a href="#" aria-label="Facebook" title="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a><a href="#" aria-label="X (Twitter)" title="X (Twitter)"><svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/></svg></a><a href="#" aria-label="Instagram" title="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Brand Bar -->
+    <div class="brand-bar">
+        <div class="container">
+            <div class="brand-bar-content">
+                <a href="index.html" class="brand-logo">
+                    <div class="brand-logo-icon" id="brandLogo"></div>
+                    <div class="brand-logo-text"><span class="school-name">Apex International Senior Secondary School</span><span
+                            class="school-tagline">Reach Beyond Your Limits · Est. 2008</span></div>
+                </a>
+                <div class="brand-contact-info">
+                    <div class="brand-contact-item">
+                        <div class="bci-icon">📞</div>
+                        <div class="bci-text"><strong>Call Us</strong><span>+91 925 615 1729</span></div>
+                    </div>
+                    <div class="brand-contact-item">
+                        <div class="bci-icon">📍</div>
+                        <div class="bci-text"><strong>Visit Us</strong><span>NH68, Badsam Bypass Road</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo" aria-hidden="true" tabindex="-1">
+                    <div class="logo-icon" id="headerLogo">A</div>
+                    <div class="logo-text">Apex <span>International</span></div>
+                </a>
+                <nav id="mainNav" aria-label="Main navigation">
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="principal.html">Leadership</a></li>
+                        <li><a href="academics.html">Academics</a></li>
+                        <li><a href="faculty.html">Faculty</a></li>
+                        <li><a href="facilities.html">Facilities</a></li>
+                        <li><a href="calendar.html" class="active">Calendar</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="admission.html">Admission</a></li>
+                        <li><a href="policies.html">Policies</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </nav>
+                
+                <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation"
+                    aria-expanded="false"><span></span><span></span><span></span></button>
+                <div class="nav-overlay" id="navOverlay"></div>
+            </div>
+        </div>
+    </header>
+
+    <main id="mainContent">
+        <section class="page-header">
+            <div class="container">
+                <h1>School Calendar</h1>
+                <p>Stay updated with important dates, events, vacation schedules &amp; bell timings</p>
+            </div>
+        </section>
+
+        <!-- Interactive Visual Calendar -->
+        <section>
+            <div class="container">
+                <div class="section-title">
+                    <h2>Monthly Calendar</h2>
+                    <p>Navigate through months to see holidays and events at a glance</p>
+                </div>
+                <div class="visual-calendar" id="visualCalendar">
+                    <div class="cal-header">
+                        <button id="calPrev" aria-label="Previous month"><</button>
+                        <h3 id="calTitle">February 2026</h3>
+                        <button id="calNext" aria-label="Next month">></button>
+                    </div>
+                    <div class="cal-weekdays">
+                        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                    </div>
+                    <div class="cal-days" id="calDays"></div>
+                    <div class="cal-legend">
+                        <div class="cal-legend-item">
+                            <div class="cal-legend-dot today-dot"></div> Today
+                        </div>
+                        <div class="cal-legend-item">
+                            <div class="cal-legend-dot holiday-dot"></div> Holiday
+                        </div>
+                        <div class="cal-legend-item">
+                            <div class="cal-legend-dot event-dot"></div> Event
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events & Vacations -->
+        <section>
+            <div class="container">
+                <div class="section-title">
+                    <h2>Academic Year 2026-27</h2>
+                    <p>Upcoming events and scheduled holidays</p>
+                </div>
+                <div class="calendar-container">
+                    <!-- Upcoming Events -->
+                    <div class="calendar-card">
+                        <div class="calendar-card-header">
+                            <span>📅</span>
+                            <h3>Upcoming Events</h3>
+                        </div>
+                        <div class="calendar-card-body" id="dynamicUpcomingEvents">
+                            <div class="calendar-event-item">
+                                <div class="event-date-badge"><span class="day">15</span><span class="month">MAR</span>
+                                </div>
+                                <div class="event-details">
+                                    <h4>Annual Day Celebration</h4>
+                                    <p>Grand cultural event showcasing student talent - 10:00 AM at Main Auditorium</p>
+                                </div>
+                            </div>
+                            <div class="calendar-event-item">
+                                <div class="event-date-badge"><span class="day">22</span><span class="month">MAR</span>
+                                </div>
+                                <div class="event-details">
+                                    <h4>Parent-Teacher Meeting</h4>
+                                    <p>Term 3 progress discussion - 9:00 AM to 1:00 PM</p>
+                                </div>
+                            </div>
+                            <div class="calendar-event-item">
+                                <div class="event-date-badge"><span class="day">05</span><span class="month">APR</span>
+                                </div>
+                                <div class="event-details">
+                                    <h4>Science Exhibition</h4>
+                                    <p>Inter-school science project competition - All day event</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Vacation Calendar -->
+                    <div class="calendar-card">
+                        <div class="calendar-card-header">
+                            <span>🏖️</span>
+                            <h3>Vacation Calendar 2026-27</h3>
+                        </div>
+                        <div class="calendar-card-body" id="dynamicHolidays">
+                            <div class="vacation-item"><span class="vacation-name">?? Summer Vacation</span><span
+                                    class="vacation-dates">May 15 - Jun 30, 2026</span></div>
+                            <div class="vacation-item"><span class="vacation-name">??? Eid-ul-Fitr</span><span
+                                    class="vacation-dates">Mar 30 - Mar 31, 2026</span></div>
+                            <div class="vacation-item"><span class="vacation-name">?? Independence Day</span><span
+                                    class="vacation-dates">Aug 15, 2026</span></div>
+                            <div class="vacation-item"><span class="vacation-name">🏹 Dussehra Break</span><span
+                                    class="vacation-dates">Oct 1 - Oct 5, 2026</span></div>
+                            <div class="vacation-item"><span class="vacation-name">🪔 Diwali Vacation</span><span
+                                    class="vacation-dates">Oct 20 - Oct 28, 2026</span></div>
+                            <div class="vacation-item"><span class="vacation-name">❄️ Winter Break</span><span
+                                    class="vacation-dates">Dec 23, 2026 - Jan 2, 2027</span></div>
+                            <div class="vacation-item"><span class="vacation-name">🇮🇳 Republic Day</span><span
+                                    class="vacation-dates">Jan 26, 2027</span></div>
+                            <div class="vacation-item"><span class="vacation-name">🎨 Holi</span><span
+                                    class="vacation-dates">Mar 14 - Mar 15, 2027</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bell Schedule -->
+        <section>
+            <div class="container">
+                <div class="section-title">
+                    <h2>🔔 Bell Schedule</h2>
+                    <p>Daily timetable for all classes (Monday - Friday)</p>
+                </div>
+                <div class="bell-table-wrapper">
+                    <table class="bell-schedule-table">
+                        <thead>
+                            <tr>
+                                <th>Period</th>
+                                <th>Time</th>
+                                <th>Duration</th>
+                                <th>Activity</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="period-label">Assembly</td>
+                                <td>7:45 AM - 8:15 AM</td>
+                                <td>30 min</td>
+                                <td>Morning Assembly &amp; Prayer</td>
+                            </tr>
+                            <tr>
+                                <td class="period-label">Period 1</td>
+                                <td>8:15 AM - 9:00 AM</td>
+                                <td>45 min</td>
+                                <td>Academic Session</td>
+                            </tr>
+                            <tr>
+                                <td class="period-label">Period 2</td>
+                                <td>9:00 AM - 9:45 AM</td>
+                                <td>45 min</td>
+                                <td>Academic Session</td>
+                            </tr>
+                            <tr>
+                                <td class="period-label">Period 3</td>
+                                <td>9:45 AM - 10:30 AM</td>
+                                <td>45 min</td>
+                                <td>Academic Session</td>
+                            </tr>
+                            <tr class="break-row">
+                                <td class="period-label">☕ Short Break</td>
+                                <td>10:30 AM - 10:50 AM</td>
+                                <td>20 min</td>
+                                <td>Snack Time</td>
+                            </tr>
+                            <tr>
+                                <td class="period-label">Period 4</td>
+                                <td>10:50 AM - 11:35 AM</td>
+                                <td>45 min</td>
+                                <td>Academic Session</td>
+                            </tr>
+                            <tr>
+                                <td class="period-label">Period 5</td>
+                                <td>11:35 AM - 12:20 PM</td>
+                                <td>45 min</td>
+                                <td>Academic Session</td>
+                            </tr>
+                            <tr class="break-row">
+                                <td class="period-label">🍱 Lunch Break</td>
+                                <td>12:20 PM - 1:00 PM</td>
+                                <td>40 min</td>
+                                <td>Lunch &amp; Recess</td>
+                            </tr>
+                            <tr>
+                                <td class="period-label">Period 6</td>
+                                <td>1:00 PM - 1:45 PM</td>
+                                <td>45 min</td>
+                                <td>Academic Session</td>
+                            </tr>
+                            <tr>
+                                <td class="period-label">Period 7</td>
+                                <td>1:45 PM - 2:30 PM</td>
+                                <td>45 min</td>
+                                <td>Academic / Activity Period</td>
+                            </tr>
+                            <tr>
+                                <td class="period-label">Period 8</td>
+                                <td>2:30 PM - 3:15 PM</td>
+                                <td>45 min</td>
+                                <td>Sports / Co-curricular</td>
+                            </tr>
+                            <tr>
+                                <td class="period-label">🎒 Dispersal</td>
+                                <td>3:15 PM</td>
+                                <td>-</td>
+                                <td>School Day Ends</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="text-align:center; margin-top:16px; color:#6b7280; font-size:0.85rem;">
+                    <strong>Saturday Schedule:</strong> 7:45 AM - 12:30 PM (5 periods) &nbsp;|&nbsp;
+                    <strong>Pre-Primary:</strong> 8:00 AM - 12:30 PM
+                </p>
+            </div>
+        </section>
+
+        <!-- Important Dates -->
+        <section class="features">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Key Academic Dates</h2>
+                    <p>Important milestones throughout the academic year</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📝</div>
+                        <h3>Exam Schedule</h3>
+                        <p>Term 1 Exams: Aug 2026<br>Mid-Term: Nov 2026<br>Term 2 Exams: Feb 2027<br>Final Exams: Mar
+                            2027</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📈</div>
+                        <h3>Report Card Days</h3>
+                        <p>Term 1: Sep 2026<br>Mid-Year: Dec 2026<br>Term 2: Mar 2027<br>Final: Apr 2027</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤝</div>
+                        <h3>PTM Schedule</h3>
+                        <p>Q1 Review: Jul 2026<br>Q2 Review: Oct 2026<br>Q3 Review: Jan 2027<br>Annual Review: Apr 2027
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-banner">
+            <div class="container">
+                <h2>Never Miss an Update</h2>
+                <p>Contact us to subscribe to our SMS &amp; email alerts for all school events.</p>
+                <a href="contact.html" class="btn">Contact Us ➔</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Apex International Senior Secondary School</h3>
+                    <p>Inspiring a love for learning in Sanchore since 2008.</p>
+                    <p>📍 NH68, Badsam Bypass Road, Sanchore, Rajasthan - 343041</p>
+                    <p>📞 +91 925 615 1729</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="principal.html">Leadership</a></li>
+                        <li><a href="academics.html">Academics</a></li>
+                        <li><a href="faculty.html">Faculty</a></li>
+                        <li><a href="calendar.html">Calendar</a></li>
+                        <li><a href="admission.html">Admission</a></li>
+                        <li><a href="policies.html">Policies</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Important Links</h3>
+                    <ul>
+                        <li><a href="facilities.html">Facilities</a></li>
+                        <li><a href="gallery.html">Gallery</a></li>
+                        <li><a href="admission.html">Apply Now</a></li>
+                        <li><a href="policies.html">School Policies</a></li></ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Apex International Senior Secondary School. All Rights Reserved. | <a href="privacy.html">Privacy
+                        Policy</a></p>
+            </div>
+        </div>
+    </footer>
+
+        <!-- Firebase compat SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+    <script>
+        const _fbCfg = {
+            apiKey:"AIzaSyC-40yja6AZW4ZnYvr5xKZ3MHVt6NgNkdY",
+            authDomain:"apex-international-schoo-b6d46.firebaseapp.com",
+            projectId:"apex-international-schoo-b6d46",
+            storageBucket:"apex-international-schoo-b6d46.firebasestorage.app",
+            messagingSenderId:"396691111307",
+            appId:"1:396691111307:web:ed30f99005afb12f92c38e",
+            measurementId:"G-48Q6KG4Y7V"
+        };
+        if (!firebase.apps.length) firebase.initializeApp(_fbCfg);
+        const db = firebase.firestore();
+    </script><script src="js/website-sync.js"></script>
+    <script>
+        // Mobile menu
+        const menuToggle = document.getElementById('menuToggle'), mainNav = document.getElementById('mainNav'), navOverlay = document.getElementById('navOverlay');
+        function toggleMenu() { const a = menuToggle.classList.toggle('active'); mainNav.classList.toggle('active'); navOverlay.classList.toggle('active'); document.body.classList.toggle('menu-open'); menuToggle.setAttribute('aria-expanded', a); }
+        menuToggle.addEventListener('click', toggleMenu); navOverlay.addEventListener('click', toggleMenu);
+        mainNav.querySelectorAll('a').forEach(l => { l.addEventListener('click', () => { if (mainNav.classList.contains('active')) toggleMenu(); }); });
+
+        // Interactive Calendar - merge admin data with built-in data
+        (function () {
+            // Base holidays and events from static content
+            const holidays = {
+                '2026-3-30': 'Eid-ul-Fitr', '2026-3-31': 'Eid-ul-Fitr',
+                '2026-8-15': 'Independence Day',
+                '2026-10-1': 'Dussehra', '2026-10-2': 'Dussehra', '2026-10-3': 'Dussehra', '2026-10-4': 'Dussehra', '2026-10-5': 'Dussehra',
+                '2026-10-20': 'Diwali', '2026-10-21': 'Diwali', '2026-10-22': 'Diwali', '2026-10-23': 'Diwali',
+                '2026-10-24': 'Diwali', '2026-10-25': 'Diwali', '2026-10-26': 'Diwali', '2026-10-27': 'Diwali', '2026-10-28': 'Diwali',
+                '2026-12-23': 'Winter Break', '2026-12-24': 'Winter Break', '2026-12-25': 'Winter Break',
+                '2026-12-26': 'Winter Break', '2026-12-27': 'Winter Break', '2026-12-28': 'Winter Break',
+                '2026-12-29': 'Winter Break', '2026-12-30': 'Winter Break', '2026-12-31': 'Winter Break',
+                '2027-1-1': 'Winter Break', '2027-1-2': 'Winter Break', '2027-1-26': 'Republic Day',
+                '2027-2-25': 'Exam Prep', '2027-2-26': 'Exam Prep', '2027-2-27': 'Exam Prep', '2027-2-28': 'Exam Prep',
+                '2027-3-14': 'Holi', '2027-3-15': 'Holi',
+            };
+            for (let d = 15; d <= 31; d++) holidays['2026-5-' + d] = 'Summer Vacation';
+            for (let d = 1; d <= 30; d++) holidays['2026-6-' + d] = 'Summer Vacation';
+
+            const events = {
+                '2026-3-15': 'Annual Day', '2026-3-22': 'PTM',
+                '2026-4-5': 'Science Exhibition', '2026-4-12': 'Sports Day',
+                '2026-4-20': 'Orientation', '2026-5-10': 'Inter-School Debate', '2026-9-5': 'Teachers Day',
+            };
+
+            // Merge admin portal data if available
+            if (typeof WebsiteSync !== 'undefined') {
+                const adminData = WebsiteSync.getAdminCalendarData();
+                Object.assign(holidays, adminData.holidays);
+                Object.assign(events, adminData.events);
+            }
+
+            let currentMonth = new Date().getMonth();
+            let currentYear = new Date().getFullYear();
+
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const calTitle = document.getElementById('calTitle');
+            const calDays = document.getElementById('calDays');
+
+            function renderCalendar() {
+                calTitle.textContent = monthNames[currentMonth] + ' ' + currentYear;
+                calDays.innerHTML = '';
+                const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+                const today = new Date();
+
+                for (let i = 0; i < firstDay; i++) {
+                    const empty = document.createElement('div');
+                    empty.className = 'cal-day empty';
+                    calDays.appendChild(empty);
+                }
+
+                for (let d = 1; d <= daysInMonth; d++) {
+                    const dayEl = document.createElement('div');
+                    dayEl.className = 'cal-day';
+                    dayEl.textContent = d;
+                    const key = currentYear + '-' + (currentMonth + 1) + '-' + d;
+                    if (today.getDate() === d && today.getMonth() === currentMonth && today.getFullYear() === currentYear) {
+                        dayEl.classList.add('today');
+                    }
+                    if (holidays[key]) { dayEl.classList.add('holiday'); dayEl.title = holidays[key]; }
+                    if (events[key]) { dayEl.classList.add('event'); dayEl.title = events[key]; }
+                    calDays.appendChild(dayEl);
+                }
+            }
+
+            document.getElementById('calPrev').addEventListener('click', function () {
+                currentMonth--;
+                if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+                renderCalendar();
+            });
+
+            document.getElementById('calNext').addEventListener('click', function () {
+                currentMonth++;
+                if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+                renderCalendar();
+            });
+
+            renderCalendar();
+        })();
+    </script>
+</body>
+
+</html>
+
