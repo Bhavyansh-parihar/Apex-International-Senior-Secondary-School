@@ -81,7 +81,10 @@ const WebsiteSync = {
         if (!container) return;
 
         const staff = await this.getAll(this.COL.STAFF);
-        if (staff.length === 0) return; // keep hardcoded fallback
+        
+        // Clear container (removes hardcoded placeholders)
+        container.innerHTML = '';
+        if (staff.length === 0) return;
 
         const colors = [
             'linear-gradient(135deg,#1e3a8a,#3b82f6)',
@@ -123,6 +126,9 @@ const WebsiteSync = {
         if (!container) return;
 
         const albums = await this.getAll(this.COL.GALLERY);
+        
+        // Clear container
+        container.innerHTML = '';
         if (albums.length === 0) return;
 
         // Hide the placeholder note when we have real gallery data
@@ -221,6 +227,9 @@ const WebsiteSync = {
 
         const content = await this.getObject(this.COL.CONTENT);
         const items = content.homepageHighlights?.ticker;
+        
+        // Clear container
+        container.innerHTML = '';
         if (!items || items.length === 0) return;
 
         // Duplicate for seamless loop
@@ -236,6 +245,9 @@ const WebsiteSync = {
 
         const allNews = await this.getAll(this.COL.NEWS);
         const news = allNews.filter(n => n.status === 'Published').slice(0, 3);
+        
+        // Clear container
+        container.innerHTML = '';
         if (news.length === 0) return;
 
         const icons = ['📰', '🏆', '📢', '🎉', '📚'];
@@ -264,6 +276,8 @@ const WebsiteSync = {
             .filter(e => e.category === 'Event' || e.category === 'Exam')
             .sort((a, b) => new Date(a.date) - new Date(b.date));
 
+        // Clear container
+        container.innerHTML = '';
         if (events.length === 0) return;
 
         const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
@@ -292,6 +306,8 @@ const WebsiteSync = {
             .filter(e => e.category === 'Holiday')
             .sort((a, b) => new Date(a.date) - new Date(b.date));
 
+        // Clear container
+        container.innerHTML = '';
         if (holidays.length === 0) return;
 
         container.innerHTML = holidays.map(h => {

@@ -136,7 +136,7 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
     flex-wrap: nowrap;
 }
 
@@ -166,14 +166,14 @@ img {
 }
 
 .brand-logo-text .school-name {
-    font-size: 1.05rem;
+    font-size: 1.25rem;
     font-weight: 800;
     color: var(--primary-color);
     line-height: 1.2;
-    letter-spacing: 0.2px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    letter-spacing: 0.3px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
 }
 
 .brand-logo-text .school-tagline {
@@ -182,6 +182,7 @@ img {
     font-weight: 500;
     letter-spacing: 0.8px;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .brand-contact-info {
@@ -1803,6 +1804,7 @@ body.menu-open {
 
     .brand-contact-info {
         display: flex;
+        gap: 25px;
     }
 
     .hero {
@@ -2242,39 +2244,3 @@ body.menu-open {
         gap: 24px;
     }
 }
-
-/* ========================== */
-/* Brand Bar Responsive Rules */
-/* ========================== */
-
-/* Hide contact items on small screens — name alone needs space */
-@media (max-width: 700px) {
-    .brand-contact-info {
-        display: none;
-    }
-    .brand-logo-text .school-name {
-        font-size: 0.92rem;
-        white-space: normal;
-    }
-}
-
-/* Compact icon size on medium screens */
-@media (min-width: 701px) and (max-width: 1024px) {
-    .brand-contact-item .bci-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 0.85rem;
-    }
-    .brand-contact-item .bci-text span {
-        font-size: 0.8rem;
-    }
-    .brand-contact-item .bci-text strong {
-        font-size: 0.68rem;
-    }
-    .brand-logo-text .school-name {
-        font-size: 0.95rem;
-    }
-    .brand-contact-info {
-        gap: 12px;
-    }
-}

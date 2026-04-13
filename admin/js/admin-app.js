@@ -1536,6 +1536,50 @@ const AdminApp = {
         this.showToast('Settings saved successfully!', 'success');
     },
 
+    /** Manual Reset to defaults */
+    async confirmResetDefaults() {
+        if (!confirm('This will restore the default staff, events, and news records to your school portal. Existing items will remain, but defaults will be added back if missing. Continue?')) return;
+
+        this.showLoading('Restoring defaults...');
+        try {
+            await AdminDB.seedDefaults();
+            this.showToast('Default data restored successfully!', 'success');
+            AdminDB.logActivity('Data Reset', 'System defaults were manually restored');
+            // Refresh current section if on dynamic page
+            this.loadSection(this.currentSection);
+        } catch (e) {
+            this.showToast('Failed to restore defaults: ' + e.message, 'error');
+        } finally {
+            this.hideLoading();
+        }
+    },
+
+    /** Permanent System Purge */
+    async confirmPurgeData() {
+        const warning = 'ARE YOU SURE YOU WANT TO DELETE THIS INFORMATION PERMANENTLY?\n\nThis will wipe all Faculty, Events, News, Gallery albums, Inquiries, and Logs from your Firestore database. This action CANNOT be undone.';
+        if (!confirm(warning)) return;
+
+        const secondWarning = 'FINAL WARNING: All your school data will be erased. Type "PURGE" to confirm.';
+        const confirmation = prompt(secondWarning);
+        if (confirmation !== 'PURGE') {
+            this.showToast('Purge cancelled. You must type PURGE to confirm.', 'info');
+            return;
+        }
+
+        this.showLoading('Purging system data...');
+        try {
+            await AdminDB.purgeAllData();
+            this.showToast('System data purged permanently.', 'warning');
+            AdminDB.logActivity('System Wipe', 'User performed a full system data purge');
+            // Refresh current section
+            this.loadSection(this.currentSection);
+        } catch (e) {
+            this.showToast('Purge failed: ' + e.message, 'error');
+        } finally {
+            this.hideLoading();
+        }
+    },
+
     changePassword() {
         const current = document.getElementById('currentPassword')?.value;
         const newPass = document.getElementById('newPassword')?.value;

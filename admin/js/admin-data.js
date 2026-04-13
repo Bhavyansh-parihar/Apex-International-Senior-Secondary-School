@@ -280,6 +280,37 @@ const AdminDB = {
         return log;
     },
 
+    /** PURGE ALL DATA from major collections */
+    async purgeAllData() {
+        const collections = [
+            this.COL.EVENTS,
+            this.COL.NEWS,
+            this.COL.GALLERY,
+            this.COL.STAFF,
+            this.COL.INQUIRIES,
+            this.COL.LOGS
+        ];
+
+        if (typeof db === 'undefined') {
+            collections.forEach(c => localStorage.removeItem(c));
+            return;
+        }
+
+        const batchSize = 20;
+        for (const col of collections) {
+            const snap = await db.collection(col).get();
+            const docs = snap.docs;
+            // Delete in batches of 20 to avoid Firestore limits
+            for (let i = 0; i < docs.length; i += batchSize) {
+                const batch = db.batch();
+                docs.slice(i, i + batchSize).forEach(d => batch.delete(d.ref));
+                await batch.commit();
+            }
+            localStorage.removeItem(col);
+        }
+        this.logActivity('System Wipe', 'All dynamic data was purged from the system.');
+    },
+
     // =============================================
     // UTILITIES
     // =============================================
@@ -461,15 +492,5 @@ const AdminDB = {
     }
 };
 
-// ---- Boot: seed Firestore once, then cache locally ----
-AdminDB.seedDefaults().catch(e => {
-    console.warn('Firestore seed failed — using localStorage fallback:', e);
-    // Minimal local fallback so the UI doesn't break
-    if (!localStorage.getItem(AdminDB.KEYS.USERS)) {
-        const allP = ['dashboard', 'events', 'news', 'gallery', 'staff', 'content', 'inquiries', 'logs', 'accesslogs', 'settings', 'users'];
-        localStorage.setItem(AdminDB.KEYS.USERS, JSON.stringify([
-            { id: 'admin001', name: 'Super Admin', email: 'admin@apexschool.edu', role: 'Super Admin', avatar: 'SA', status: 'Active', permissions: allP },
-            { id: 'editor001', name: 'Content Editor', email: 'editor@apexschool.edu', role: 'Content Editor', avatar: 'CE', status: 'Active', permissions: ['dashboard', 'events', 'news', 'gallery', 'content'] }
-        ]));
-    }
-});
+// ---- Boot: Manual seeding available via AdminApp ----
+// Auto-seeding removed per user request to prevent "recovey" of deleted data.
