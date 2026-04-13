@@ -361,8 +361,8 @@
                 <!-- ============================= -->
                 <div class="section-page" id="section-content">
                     <div class="tab-nav">
-                        <button class="tab-btn active" onclick="AdminApp.switchTab(this, 'principalTab')">Principal's
-                            Message</button>
+                        <button class="tab-btn active" onclick="AdminApp.switchTab(this, 'principalTab')">Leadership
+                            Messages</button>
                         <button class="tab-btn" onclick="AdminApp.switchTab(this, 'policiesTab')">School
                             Policies</button>
                         <button class="tab-btn" onclick="AdminApp.switchTab(this, 'highlightsTab')">Homepage
@@ -370,47 +370,113 @@
                         <button class="tab-btn" onclick="AdminApp.switchTab(this, 'mediaTab')">Website Media</button>
                     </div>
 
-                    <!-- Principal's Message -->
+                    <!-- Leadership Messages -->
                     <div class="tab-content active" id="principalTab">
-                        <div class="content-card">
+                        <!-- Founder Message -->
+                        <div class="content-card" style="margin-bottom: 24px;">
                             <div class="card-header">
-                                <h2>Principal's Message</h2>
-                                <div class="btn-group">
-                                    <button class="btn btn-primary btn-sm"
-                                        onclick="AdminApp.saveContent('principalMessage')">Save Changes</button>
-                                </div>
+                                <h2>Founder's Message</h2>
                             </div>
                             <div class="card-body">
                                 <div class="grid-2">
                                     <div class="form-group">
-                                        <label for="principalMsgTitle">Title</label>
-                                        <input type="text" id="principalMsgTitle" placeholder="Message from the Principal">
+                                        <label for="founderMsgTitle">Name / Title</label>
+                                        <input type="text" id="founderMsgTitle" placeholder="John Doe, Founder">
                                     </div>
                                 </div>
                                 <div class="form-group" style="margin-top: 15px;">
-                                    <label>Principal's Photo (4:3 Recommended)</label>
+                                    <label>Founder's Photo (4:3 Recommended)</label>
                                     <div class="image-upload-wrapper">
-                                        <div class="image-preview principal-preview" id="principalPreview">
+                                        <div class="image-preview principal-preview" id="founderPreview">
                                             <span>No photo set</span>
                                         </div>
                                         <div class="image-upload-controls">
                                             <button class="btn btn-sm btn-outline"
-                                                onclick="document.getElementById('principalInput').click()">Choose
-                                                Photo</button>
+                                                onclick="document.getElementById('founderInput').click()">Choose Photo</button>
                                             <button class="btn btn-sm btn-danger"
-                                                onclick="AdminApp.removeMedia('principal')">Remove</button>
-                                            <input type="file" id="principalInput" hidden accept="image/*"
-                                                onchange="AdminApp.handleMediaSelect(this, 'principal')">
+                                                onclick="AdminApp.removeMedia('founder')">Remove</button>
+                                            <input type="file" id="founderInput" hidden accept="image/*"
+                                                onchange="AdminApp.handleMediaSelect(this, 'founder')">
                                         </div>
-                                        <p class="help-text">JPG or PNG, Max 2MB. A 4:3 aspect ratio is recommended for
-                                            best display on the Principal's Desk page.</p>
                                     </div>
                                 </div>
                                 <div class="form-group" style="margin-top: 15px;">
-                                    <label for="principalMsgContent">Content</label>
-                                    <textarea id="principalMsgContent" rows="12"
-                                        placeholder="Write the principal's message here..."></textarea>
+                                    <label for="founderMsgContent">Content</label>
+                                    <textarea id="founderMsgContent" rows="8" placeholder="Message content..."></textarea>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- Director Message -->
+                        <div class="content-card" style="margin-bottom: 24px;">
+                            <div class="card-header">
+                                <h2>Director's Message</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="grid-2">
+                                    <div class="form-group">
+                                        <label for="directorMsgTitle">Name / Title</label>
+                                        <input type="text" id="directorMsgTitle" placeholder="Jane Doe, Director">
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: 15px;">
+                                    <label>Director's Photo</label>
+                                    <div class="image-upload-wrapper">
+                                        <div class="image-preview principal-preview" id="directorPreview">
+                                            <span>No photo set</span>
+                                        </div>
+                                        <div class="image-upload-controls">
+                                            <button class="btn btn-sm btn-outline"
+                                                onclick="document.getElementById('directorInput').click()">Choose Photo</button>
+                                            <button class="btn btn-sm btn-danger"
+                                                onclick="AdminApp.removeMedia('director')">Remove</button>
+                                            <input type="file" id="directorInput" hidden accept="image/*"
+                                                onchange="AdminApp.handleMediaSelect(this, 'director')">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: 15px;">
+                                    <label for="directorMsgContent">Content</label>
+                                    <textarea id="directorMsgContent" rows="8" placeholder="Message content..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Administrator Message -->
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h2>Administrator's Message</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="grid-2">
+                                    <div class="form-group">
+                                        <label for="administratorMsgTitle">Name / Title</label>
+                                        <input type="text" id="administratorMsgTitle" placeholder="Dr. Smith, Admin">
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: 15px;">
+                                    <label>Administrator's Photo</label>
+                                    <div class="image-upload-wrapper">
+                                        <div class="image-preview principal-preview" id="administratorPreview">
+                                            <span>No photo set</span>
+                                        </div>
+                                        <div class="image-upload-controls">
+                                            <button class="btn btn-sm btn-outline"
+                                                onclick="document.getElementById('administratorInput').click()">Choose Photo</button>
+                                            <button class="btn btn-sm btn-danger"
+                                                onclick="AdminApp.removeMedia('administrator')">Remove</button>
+                                            <input type="file" id="administratorInput" hidden accept="image/*"
+                                                onchange="AdminApp.handleMediaSelect(this, 'administrator')">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="margin-top: 15px;">
+                                    <label for="administratorMsgContent">Content</label>
+                                    <textarea id="administratorMsgContent" rows="8" placeholder="Message content..."></textarea>
+                                </div>
+                            </div>
+                            <div style="padding: 16px; border-top: 1px solid #e5e7eb; display: flex; justify-content: flex-end; gap: 12px; background: #fafafa; border-radius: 0 0 12px 12px;">
+                                <button class="btn btn-primary" onclick="AdminApp.saveContent('leadershipMessages')">Save Leadership Messages</button>
                             </div>
                         </div>
                     </div>

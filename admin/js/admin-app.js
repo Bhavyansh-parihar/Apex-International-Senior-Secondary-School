@@ -1044,11 +1044,14 @@ const AdminApp = {
     loadContent() {
         const content = AdminDB.getObjectSync(AdminDB.KEYS.CONTENT);
 
-        // Principal message
-        const pmTitle = document.getElementById('principalMsgTitle');
-        const pmContent = document.getElementById('principalMsgContent');
-        if (pmTitle) pmTitle.value = content.principalMessage?.title || '';
-        if (pmContent) pmContent.value = content.principalMessage?.content || '';
+        // Leadership messages
+        ['founder', 'director', 'administrator'].forEach(role => {
+            const roleKey = role + 'Message';
+            const titleEl = document.getElementById(role + 'MsgTitle');
+            const contentEl = document.getElementById(role + 'MsgContent');
+            if (titleEl) titleEl.value = content[roleKey]?.title || '';
+            if (contentEl) contentEl.value = content[roleKey]?.content || '';
+        });
 
         // School policies
         const spTitle = document.getElementById('policiesTitle');
@@ -1065,7 +1068,9 @@ const AdminApp = {
         // Website Media Previews
         this._updateMediaPreview('logo', content.websiteMedia?.logoUrl);
         this._updateMediaPreview('about', content.websiteMedia?.aboutUrl);
-        this._updateMediaPreview('principal', content.principalMessage?.photoUrl);
+        this._updateMediaPreview('founder', content.founderMessage?.photoUrl);
+        this._updateMediaPreview('director', content.directorMessage?.photoUrl);
+        this._updateMediaPreview('administrator', content.administratorMessage?.photoUrl);
 
         // Hero Slideshow Previews
         for (let i = 0; i < 5; i++) {
@@ -1124,7 +1129,9 @@ const AdminApp = {
 
             if (type === 'logo') this._logoDataUrl = dataUrl;
             if (type === 'about') this._aboutDataUrl = dataUrl;
-            if (type === 'principal') this._principalDataUrl = dataUrl;
+            if (type === 'founder') this._founderDataUrl = dataUrl;
+            if (type === 'director') this._directorDataUrl = dataUrl;
+            if (type === 'administrator') this._administratorDataUrl = dataUrl;
             if (type === 'staffPhoto') this._staffPhotoDataUrl = dataUrl;
             if (type === 'hero') {
                 if (index !== null) this._heroDataUrls[index] = dataUrl;
@@ -1143,7 +1150,9 @@ const AdminApp = {
 
         if (type === 'logo') this._logoDataUrl = 'REMOVE';
         if (type === 'about') this._aboutDataUrl = 'REMOVE';
-        if (type === 'principal') this._principalDataUrl = 'REMOVE';
+        if (type === 'founder') { this._founderDataUrl = 'REMOVE'; }
+        if (type === 'director') { this._directorDataUrl = 'REMOVE'; }
+        if (type === 'administrator') { this._administratorDataUrl = 'REMOVE'; }
         if (type === 'staffPhoto') this._staffPhotoDataUrl = 'REMOVE';
         if (type === 'hero') {
             if (index !== null) this._heroDataUrls[index] = 'REMOVE';
@@ -1155,36 +1164,42 @@ const AdminApp = {
         const content = AdminDB.getObjectSync(AdminDB.KEYS.CONTENT);
 
         switch (sectionKey) {
-            case 'principalMessage':
-                if (!content.principalMessage) content.principalMessage = {};
-                
-                // Handle Photo Upload if selected
-                if (this._principalDataUrl) {
-                    this.showLoading('Uploading principal photo...');
-                    try {
-                        if (this._principalDataUrl === 'REMOVE') {
-                            content.principalMessage.photoUrl = '';
-                            content.principalMessage.cloudinaryId = '';
+            case 'leadershipMessages':
+                const uploadLeaderMedia = async (role) => {
+                    const roleKey = role + 'Message';
+                    if (!content[roleKey]) content[roleKey] = {};
+                    const dataUrlKey = '_' + role + 'DataUrl';
+                    
+                    if (this[dataUrlKey]) {
+                        if (this[dataUrlKey] === 'REMOVE') {
+                            content[roleKey].photoUrl = '';
+                            content[roleKey].cloudinaryId = '';
                         } else {
-                            // Compress for 4:3 (800x600)
-                            const compressed = await this._compressImage(this._principalDataUrl, 800, 0.85);
-                            const result = await CloudinaryConfig.upload(compressed, 'apex_school/principal');
-                            content.principalMessage.photoUrl = result.secure_url;
-                            content.principalMessage.cloudinaryId = result.public_id;
+                            const compressed = await this._compressImage(this[dataUrlKey], 800, 0.85);
+                            const result = await CloudinaryConfig.upload(compressed, 'apex_school/leadership');
+                            content[roleKey].photoUrl = result.secure_url;
+                            content[roleKey].cloudinaryId = result.public_id;
                         }
-                        this._principalDataUrl = null;
-                        this.hideLoading();
-                    } catch (e) {
-                        console.error('Principal photo upload failed:', e);
-                        this.showToast('Photo upload failed.', 'error');
-                        this.hideLoading();
-                        return;
+                        this[dataUrlKey] = null;
                     }
-                }
+                    
+                    content[roleKey].title = document.getElementById(role + 'MsgTitle').value.trim();
+                    content[roleKey].content = document.getElementById(role + 'MsgContent').value.trim();
+                    content[roleKey].lastUpdated = new Date().toISOString();
+                };
 
-                content.principalMessage.title = document.getElementById('principalMsgTitle').value.trim();
-                content.principalMessage.content = document.getElementById('principalMsgContent').value.trim();
-                content.principalMessage.lastUpdated = new Date().toISOString();
+                this.showLoading('Setting up leadership messages...');
+                try {
+                    await uploadLeaderMedia('founder');
+                    await uploadLeaderMedia('director');
+                    await uploadLeaderMedia('administrator');
+                    this.hideLoading();
+                } catch (e) {
+                    console.error('Leadership photo upload failed:', e);
+                    this.showToast('Photo upload failed.', 'error');
+                    this.hideLoading();
+                    return;
+                }
                 break;
             case 'schoolPolicies':
                 content.schoolPolicies = {

@@ -168,30 +168,47 @@ const WebsiteSync = {
     },
 
     // =============================================
-    // PRINCIPAL PAGE
+    // LEADERSHIP PAGES
     // =============================================
-    async renderPrincipalMessage() {
-        const container = document.getElementById('dynamicPrincipalMessage');
+    async renderLeadershipMessages() {
+        const container = document.getElementById('dynamicLeadershipMessages');
         if (!container) return;
 
         const content = await this.getObject(this.COL.CONTENT);
-        if (!content.principalMessage?.content) return;
+        let html = '';
 
-        // Message text
-        container.innerHTML = content.principalMessage.content
-            .split('\n')
-            .filter(p => p.trim())
-            .map(p => `<p>${this._esc(p)}</p>`)
-            .join('');
-            
-        // Photo
-        if (content.principalMessage.photoUrl) {
-            const photoEl = document.getElementById('principalPhoto');
-            if (photoEl) {
-                const optPhoto = this._cdnUrl(content.principalMessage.photoUrl, 400);
-                photoEl.innerHTML = `<img src="${optPhoto}" alt="Principal Photo" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">`;
-                photoEl.style.background = 'transparent';
+        const roles = ['founder', 'director', 'administrator'];
+        
+        roles.forEach(role => {
+            const msg = content[role + 'Message'];
+            if (msg && (msg.content || msg.title)) {
+                const photoHtml = msg.photoUrl 
+                    ? `<div class="principal-photo" style="margin-bottom: 24px;">
+                           <div class="photo-frame"><img src="${this._cdnUrl(msg.photoUrl, 400)}" alt="${this._esc(role)} Photo" style="width:100%;height:100%;object-fit:cover;border-radius:12px;"></div>
+                       </div>` 
+                    : '';
+                
+                const paras = msg.content
+                    ? msg.content.split('\n').filter(p => p.trim()).map(p => `<p>${this._esc(p)}</p>`).join('')
+                    : '';
+
+                html += `
+                <div class="leadership-card" style="display:flex; flex-wrap:wrap; gap:40px; margin-bottom: 60px; background:var(--white); padding: 40px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                    <div style="flex:1; min-width: 280px; max-width:400px;">
+                        ${photoHtml}
+                        <h3 style="color:var(--primary-color); font-size:1.6rem; margin-bottom:5px;">${this._esc(msg.title || '')}</h3>
+                    </div>
+                    <div style="flex:2; min-width: 300px; font-size: 1.05rem; line-height: 1.8; color: var(--text-dark);">
+                        ${paras}
+                    </div>
+                </div>`;
             }
+        });
+
+        if (html) {
+            container.innerHTML = html;
+        } else {
+            container.innerHTML = '<p style="text-align:center; padding: 40px; color: var(--text-muted);">Leadership messages will appear here once published.</p>';
         }
     },
 
@@ -314,7 +331,7 @@ const WebsiteSync = {
         await Promise.allSettled([
             this.renderFaculty(),
             this.renderGallery(),
-            this.renderPrincipalMessage(),
+            this.renderLeadershipMessages(),
             this.renderNewsTicker(),
             this.renderNewsSection(),
             this.renderCalendarEvents(),
