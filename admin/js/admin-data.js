@@ -449,10 +449,10 @@ const AdminDB = {
 
     _defaultSettings() {
         return {
-            schoolName: 'Apex International School',
-            schoolEmail: 'info@apexschool.edu',
-            schoolPhone: '+1 234 567 8900',
-            schoolAddress: '123 Education Lane, City, State - 123456',
+            schoolName: 'Apex International Senior Secondary School',
+            schoolEmail: 'apexschoolsanchore2018@gmail.com',
+            schoolPhone: '+91 925 615 1729',
+            schoolAddress: 'NH68, Badsam Bypass Road, Sanchore, Rajasthan - 343041',
             enableNotifications: true,
             enableActivityLog: true,
             maintenanceMode: false,
