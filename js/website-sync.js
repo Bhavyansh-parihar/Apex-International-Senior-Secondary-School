@@ -370,11 +370,56 @@ const WebsiteSync = {
             return;
         }
 
-        container.innerHTML = `
-            <div style="white-space: pre-line; color: var(--text-dark); line-height: 1.8; font-size: 1.05rem;">
-                ${this._esc(content.schoolPolicies.content)}
-            </div>
-        `;
+        const rawContent = content.schoolPolicies.content;
+        const sections = rawContent.split(/\n(?=\d+\.)/); // Split by "1. ", "2. ", etc.
+
+        const icons = {
+            'GENERAL CONDUCT': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>',
+            'CAMPUS & PROPERTY': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="M3 9V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>',
+            'ACADEMIC': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M8 6h10"/><path d="M8 10h10"/><path d="M8 14h10"/></svg>',
+            'UNIFORM': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>',
+            'HEALTH': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+            'LANGUAGE': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>'
+        };
+
+        if (sections.length > 1) {
+            container.innerHTML = sections.map(sec => {
+                const lines = sec.trim().split('\n');
+                const title = lines[0].replace(/^\d+\.\s*/, '');
+                const listItems = lines.slice(1).map(l => {
+                    const clean = l.replace(/^[-*•]\s*/, '').trim();
+                    return clean ? `<li>${this._esc(clean)}</li>` : '';
+                }).join('');
+
+                let iconSvg = '';
+                for (const k in icons) {
+                    if (title.toUpperCase().includes(k)) {
+                        iconSvg = icons[k];
+                        break;
+                    }
+                }
+
+                return `
+                    <div class="policy-section" style="margin-bottom: 30px;">
+                        <h3 style="display: flex; align-items: center; gap: 10px; color: var(--primary-color); font-size: 1.25rem; margin-bottom: 15px; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">
+                            ${iconSvg ? `<span style="color: var(--secondary-color);">${iconSvg}</span>` : ''}
+                            ${this._esc(title)}
+                        </h3>
+                        <ul style="list-style: none; padding-left: 0; color: var(--text-dark); line-height: 1.7;">
+                            ${listItems.split('<li>').map(li => li ? `<li style="position: relative; padding-left: 20px; margin-bottom: 8px;">
+                                <span style="position: absolute; left: 0; color: var(--secondary-color);">•</span>
+                                ${li}` : '').join('')}
+                        </ul>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            container.innerHTML = `
+                <div style="white-space: pre-line; color: var(--text-dark); line-height: 1.8; font-size: 1.05rem;">
+                    ${this._esc(rawContent)}
+                </div>
+            `;
+        }
     },
 
     // =============================================

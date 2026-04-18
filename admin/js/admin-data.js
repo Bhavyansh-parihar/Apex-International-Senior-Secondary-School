@@ -462,8 +462,54 @@ const AdminDB = {
                 lastUpdated: new Date().toISOString()
             },
             schoolPolicies: {
-                title: 'School Policies',
-                content: "1. Academic Integrity: maintain highest standards of academic honesty.\n2. Attendance: minimum 85% required.\n3. Uniform: mandatory on all regular school days.\n4. Anti-Bullying: zero tolerance.\n5. Digital Devices: mobile phones not permitted during school hours.",
+                title: 'School Rules & Regulations',
+                content: `1. GENERAL CONDUCT & DISCIPLINE
+- After the first bell rings, students must not be seen talking, playing, or loitering in the school premises.
+- Students should move through corridors and change classrooms between periods quietly and in an orderly manner.
+- Students must not quarrel with each other inside or outside the classroom.
+- Students must remain in their own class or section at all times and are not allowed to visit other classes, even during breaks.
+- Inattentiveness in class, lack of interest in studies, disrespect towards staff, or any behavior affecting school discipline will be treated seriously and may lead to suspension or dismissal.
+- Students must follow all rules, and any violation will result in disciplinary action.
+
+2. CAMPUS & PROPERTY
+- Writing or scribbling on walls or desks, dirtying classrooms, or damaging school property is strictly prohibited. Defaulters will be fined.
+- Students must ensure that their classrooms and the entire school premises remain clean and well maintained.
+- Students are not permitted to bring two-wheelers or four-wheelers onto the school campus; bicycles are allowed.
+- Students are not allowed to leave the school premises during school hours without permission from the Principal.
+
+3. ACADEMIC REQUIREMENTS
+- Each student should bring all required textbooks and notebooks for their classes.
+- No books, newspapers, periodicals, or CDs other than prescribed school books are allowed.
+- All students are required to participate in school games and other activities.
+
+4. UNIFORM & GROOMING
+- Students wearing improper or untidy uniforms will not be allowed to attend classes or appear for examinations.
+- Students are not allowed to wear high-heeled footwear, canvas or sports shoes, slippers, or sandals.
+- Girls should not wear tight jeans, pants, or skirts to school.
+- Students should not use any kind of makeup.
+
+5. HEALTH, SAFETY & HYGIENE
+- Food must be brought only in tiffin boxes. Food packed in aluminium foil, plastic covers, banana leaves, or paper is not allowed.
+- Students are discouraged from bringing or sharing sweets, toffees, or chocolates in school on birthdays or other occasions.
+- Bringing razor blades or any sharp objects to school is strictly prohibited.
+
+6. LANGUAGE POLICY
+- Students must communicate only in English within the school campus, on the school bus, and in the hostel.`,
+                lastUpdated: new Date().toISOString()
+            },
+            aboutGlance: {
+                title: 'A Glance',
+                content: `Apex International Senior Secondary School is a co-educational English-medium institution located on National Highway-68, Badsam Road, Sanchore, Jalore, Rajasthan. It has developed into a center known for quality education and training in the academic field.
+
+The school was established in the academic year 2008 with due approval from the Department of Elementary Education, Government of Rajasthan, initially as a middle school. The institution follows all the minimum standards set by the Government of Rajasthan.
+
+The school provides students with the benefits of a modern education system. It aims to undertake innovative work in the field of education and to develop skilled individuals who are committed to serving society. The institution’s progress is driven by the dedication of its management and the commitment and enthusiasm of its staff.`,
+                lastUpdated: new Date().toISOString()
+            },
+            aboutMotto: {
+                title: 'Our Motto',
+                subtitle: 'Knowledge is the greatest wealth.',
+                content: `A person can possess because it empowers individuals to think, grow, and make informed decisions in every aspect of life. Unlike material riches, knowledge cannot be stolen, lost, or diminished when shared; instead, it multiplies and benefits both the giver and the receiver. It opens doors to opportunities, helps overcome challenges, and builds confidence and independence. A knowledgeable person can adapt to changing circumstances and contribute meaningfully to society. In this way, knowledge not only enriches one’s own life but also has the power to uplift others, making it the most valuable and lasting form of wealth.`,
                 lastUpdated: new Date().toISOString()
             },
             homepageHighlights: {
