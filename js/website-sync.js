@@ -352,9 +352,79 @@ const WebsiteSync = {
             this.renderNewsSection(),
             this.renderCalendarEvents(),
             this.renderCalendarHolidays(),
-            this.renderMedia(),
-            this.renderSchoolPolicies()
+            this.renderSchoolTimings(),
+            this.renderMedia()
         ]);
+    },
+
+    // =============================================
+    // SCHOOL TIMINGS (CALENDAR PAGE)
+    // =============================================
+    async renderSchoolTimings() {
+        const timingsContainer = document.getElementById('dynamicTimingsContainer');
+        const visitingContainer = document.getElementById('dynamicVisitingHours');
+        if (!timingsContainer && !visitingContainer) return;
+
+        const content = await this.getObject(this.COL.CONTENT);
+        const timings = content.schoolTimings;
+        if (!timings) return;
+
+        // 1. Render Summer & Winter Timings
+        if (timingsContainer) {
+            let html = '';
+            
+            ['summer', 'winter'].forEach(season => {
+                const data = timings[season];
+                if (!data) return;
+
+                html += `
+                <div class="timing-season-box" style="margin-bottom: 40px;">
+                    <h3 style="color: var(--primary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 10px; font-size: 1.4rem;">
+                        <span>${season === 'summer' ? '☀️' : '❄️'}</span> 
+                        ${season.charAt(0).toUpperCase() + season.slice(1)} Timing 
+                        <span style="font-size: 0.9rem; font-weight: normal; color: var(--text-light); margin-left: auto;">
+                            Total Hours: ${this._esc(data.schoolHours)}
+                        </span>
+                    </h3>
+                    <div class="bell-table-wrapper">
+                        <table class="bell-schedule-table">
+                            <thead>
+                                <tr>
+                                    <th>Period</th>
+                                    <th>Time</th>
+                                    <th>Duration</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${data.periods.map(p => `
+                                    <tr class="${p.isBreak ? 'break-row' : ''}">
+                                        <td class="period-label">${p.isBreak ? '☕ ' : ''}${this._esc(p.label)}</td>
+                                        <td>${this._esc(p.time)}</td>
+                                        <td>${this._esc(p.duration || '-')}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>`;
+            });
+
+            timingsContainer.innerHTML = html;
+        }
+
+        // 2. Render Visiting Hours
+        if (visitingContainer && timings.visitingHours) {
+            visitingContainer.innerHTML = `
+                <div class="visiting-hours-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; background: #f8fafc; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                    ${timings.visitingHours.map(vh => `
+                        <div class="visiting-item" style="display: flex; flex-direction: column; gap: 4px;">
+                            <span style="font-weight: 700; color: var(--primary-color); font-size: 0.95rem;">${this._esc(vh.label)}</span>
+                            <span style="color: var(--text-dark); font-size: 1.1rem; font-weight: 500;">${this._esc(vh.time)}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
     },
 
     // =============================================

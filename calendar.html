@@ -359,99 +359,22 @@
         <section>
             <div class="container">
                 <div class="section-title">
-                    <h2>🔔 Bell Schedule</h2>
-                    <p>Daily timetable for all classes (Monday - Friday)</p>
+                    <h2>🔔 Bell Schedule & Timings</h2>
+                    <p>Daily timetable for Summer and Winter sessions</p>
                 </div>
-                <div class="bell-table-wrapper">
-                    <table class="bell-schedule-table">
-                        <thead>
-                            <tr>
-                                <th>Period</th>
-                                <th>Time</th>
-                                <th>Duration</th>
-                                <th>Activity</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="period-label">Assembly</td>
-                                <td>7:45 AM - 8:15 AM</td>
-                                <td>30 min</td>
-                                <td>Morning Assembly &amp; Prayer</td>
-                            </tr>
-                            <tr>
-                                <td class="period-label">Period 1</td>
-                                <td>8:15 AM - 9:00 AM</td>
-                                <td>45 min</td>
-                                <td>Academic Session</td>
-                            </tr>
-                            <tr>
-                                <td class="period-label">Period 2</td>
-                                <td>9:00 AM - 9:45 AM</td>
-                                <td>45 min</td>
-                                <td>Academic Session</td>
-                            </tr>
-                            <tr>
-                                <td class="period-label">Period 3</td>
-                                <td>9:45 AM - 10:30 AM</td>
-                                <td>45 min</td>
-                                <td>Academic Session</td>
-                            </tr>
-                            <tr class="break-row">
-                                <td class="period-label">☕ Short Break</td>
-                                <td>10:30 AM - 10:50 AM</td>
-                                <td>20 min</td>
-                                <td>Snack Time</td>
-                            </tr>
-                            <tr>
-                                <td class="period-label">Period 4</td>
-                                <td>10:50 AM - 11:35 AM</td>
-                                <td>45 min</td>
-                                <td>Academic Session</td>
-                            </tr>
-                            <tr>
-                                <td class="period-label">Period 5</td>
-                                <td>11:35 AM - 12:20 PM</td>
-                                <td>45 min</td>
-                                <td>Academic Session</td>
-                            </tr>
-                            <tr class="break-row">
-                                <td class="period-label">🍱 Lunch Break</td>
-                                <td>12:20 PM - 1:00 PM</td>
-                                <td>40 min</td>
-                                <td>Lunch &amp; Recess</td>
-                            </tr>
-                            <tr>
-                                <td class="period-label">Period 6</td>
-                                <td>1:00 PM - 1:45 PM</td>
-                                <td>45 min</td>
-                                <td>Academic Session</td>
-                            </tr>
-                            <tr>
-                                <td class="period-label">Period 7</td>
-                                <td>1:45 PM - 2:30 PM</td>
-                                <td>45 min</td>
-                                <td>Academic / Activity Period</td>
-                            </tr>
-                            <tr>
-                                <td class="period-label">Period 8</td>
-                                <td>2:30 PM - 3:15 PM</td>
-                                <td>45 min</td>
-                                <td>Sports / Co-curricular</td>
-                            </tr>
-                            <tr>
-                                <td class="period-label">🎒 Dispersal</td>
-                                <td>3:15 PM</td>
-                                <td>-</td>
-                                <td>School Day Ends</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                
+                <div id="dynamicTimingsContainer">
+                    <!-- Dynamic Summer/Winter content loaded from admin portal -->
+                    <p style="text-align:center; padding:40px; color:#6b7280;">Loading timings...</p>
                 </div>
-                <p style="text-align:center; margin-top:16px; color:#6b7280; font-size:0.85rem;">
-                    <strong>Saturday Schedule:</strong> 7:45 AM - 12:30 PM (5 periods) &nbsp;|&nbsp;
-                    <strong>Pre-Primary:</strong> 8:00 AM - 12:30 PM
-                </p>
+
+                <div class="section-title" style="margin-top: 60px;">
+                    <h2>🤝 Visiting Hours</h2>
+                    <p>Time slots to meet school administration and staff</p>
+                </div>
+                <div id="dynamicVisitingHours">
+                    <!-- Dynamic Visiting Hours loaded from admin portal -->
+                </div>
             </div>
         </section>
 

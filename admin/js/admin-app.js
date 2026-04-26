@@ -63,6 +63,7 @@ const AdminApp = {
             news: { h1: 'News & Announcements', p: 'Create and manage school news and notices.' },
             gallery: { h1: 'Gallery Management', p: 'Upload and organize school photos and albums.' },
             staff: { h1: 'Staff Directory', p: 'Manage faculty and staff information.' },
+            timings: { h1: 'School Timings', p: 'Manage summer/winter bell schedules and visiting hours.' },
             content: { h1: 'Content Management', p: 'Update website content and pages.' },
             inquiries: { h1: 'Admission Inquiries', p: 'View and manage admission inquiries.' },
             logs: { h1: 'Activity Logs', p: 'Track all portal activities and changes.' },
@@ -86,6 +87,7 @@ const AdminApp = {
             case 'news': this.loadNews(); break;
             case 'gallery': this.loadGallery(); break;
             case 'staff': this.loadStaff(); break;
+            case 'timings': this.loadTimings(); break;
             case 'content': this.loadContent(); break;
             case 'inquiries': this.loadInquiries(); break;
             case 'logs': this.loadLogs(); break;
@@ -800,6 +802,80 @@ const AdminApp = {
                 this.loadGallery();
             }
         }
+    },
+
+    // =======================================
+    // SCHOOL TIMINGS
+    // =======================================
+    loadTimings() {
+        const content = AdminDB.getObjectSync(AdminDB.KEYS.CONTENT);
+        const timings = content.schoolTimings || {};
+
+        // 1. Hours
+        document.getElementById('summerHours').value = timings.summer?.schoolHours || '';
+        document.getElementById('winterHours').value = timings.winter?.schoolHours || '';
+
+        // 2. Bell Schedules (parsing from objects to text)
+        const formatSchedule = (periods) => {
+            if (!periods) return '';
+            return periods.map(p => `${p.label} | ${p.time} | ${p.duration || ''}`).join('\n');
+        };
+        document.getElementById('summerScheduleRaw').value = formatSchedule(timings.summer?.periods);
+        document.getElementById('winterScheduleRaw').value = formatSchedule(timings.winter?.periods);
+
+        // 3. Visiting Hours
+        const formatVisiting = (visiting) => {
+            if (!visiting) return '';
+            return visiting.map(v => `${v.label} | ${v.time}`).join('\n');
+        };
+        document.getElementById('visitingHoursRaw').value = formatVisiting(timings.visitingHours);
+    },
+
+    saveTimings() {
+        const parseSchedule = (text) => {
+            return text.split('\n').filter(line => line.trim()).map(line => {
+                const parts = line.split('|').map(p => p.trim());
+                const label = parts[0] || 'Period';
+                return {
+                    label,
+                    time: parts[1] || '',
+                    duration: parts[2] || '',
+                    isBreak: label.toLowerCase().includes('recess') || label.toLowerCase().includes('break')
+                };
+            });
+        };
+
+        const parseVisiting = (text) => {
+            return text.split('\n').filter(line => line.trim()).map(line => {
+                const parts = line.split('|').map(p => p.trim());
+                const label = parts[0] || 'Staff';
+                return {
+                    label,
+                    time: parts[1] || '',
+                    isBreak: label.toLowerCase().includes('lunch') || label.toLowerCase().includes('break')
+                };
+            });
+        };
+
+        const timings = {
+            summer: {
+                schoolHours: document.getElementById('summerHours').value.trim(),
+                periods: parseSchedule(document.getElementById('summerScheduleRaw').value)
+            },
+            winter: {
+                schoolHours: document.getElementById('winterHours').value.trim(),
+                periods: parseSchedule(document.getElementById('winterScheduleRaw').value)
+            },
+            visitingHours: parseVisiting(document.getElementById('visitingHoursRaw').value),
+            lastUpdated: new Date().toISOString()
+        };
+
+        const content = AdminDB.getObjectSync(AdminDB.KEYS.CONTENT);
+        content.schoolTimings = timings;
+        AdminDB.saveObject(AdminDB.KEYS.CONTENT, content);
+
+        AdminDB.logActivity('Timings Updated', 'Updated Summer/Winter schedules and visiting hours');
+        this.showToast('School timings updated successfully!', 'success');
     },
 
     // =======================================

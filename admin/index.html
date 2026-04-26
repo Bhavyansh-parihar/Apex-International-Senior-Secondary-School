@@ -47,6 +47,9 @@
                     <a class="sidebar-link" data-section="staff" href="#">
                         <span class="icon nav-icon" data-icon="staff"></span> Staff Directory
                     </a>
+                    <a class="sidebar-link" data-section="timings" href="#">
+                        <span class="icon nav-icon" data-icon="dashboard"></span> School Timings
+                    </a>
                     <a class="sidebar-link" data-section="content" href="#">
                         <span class="icon nav-icon" data-icon="content"></span> Page Content
                     </a>
@@ -363,8 +366,6 @@
                     <div class="tab-nav">
                         <button class="tab-btn active" onclick="AdminApp.switchTab(this, 'principalTab')">Leadership
                             Messages</button>
-                        <button class="tab-btn" onclick="AdminApp.switchTab(this, 'policiesTab')">School
-                            Policies</button>
                         <button class="tab-btn" onclick="AdminApp.switchTab(this, 'highlightsTab')">Homepage
                             Highlights</button>
                         <button class="tab-btn" onclick="AdminApp.switchTab(this, 'mediaTab')">Website Media</button>
@@ -481,27 +482,6 @@
                         </div>
                     </div>
 
-                    <!-- School Policies -->
-                    <div class="tab-content" id="policiesTab">
-                        <div class="content-card">
-                            <div class="card-header">
-                                <h2>School Policies</h2>
-                                <button class="btn btn-primary btn-sm"
-                                    onclick="AdminApp.saveContent('schoolPolicies')">Save Changes</button>
-                            </div>
-                            <div class="card-body">
-                                <div class="form-group">
-                                    <label for="policiesTitle">Title</label>
-                                    <input type="text" id="policiesTitle" placeholder="School Policies">
-                                </div>
-                                <div class="form-group">
-                                    <label for="policiesContent">Content</label>
-                                    <textarea id="policiesContent" rows="12"
-                                        placeholder="List school policies here..."></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- Homepage Highlights -->
                     <div class="tab-content" id="highlightsTab">
@@ -673,6 +653,72 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ============================= -->
+                <!--       SCHOOL TIMINGS          -->
+                <!-- ============================= -->
+                <div class="section-page" id="section-timings">
+                    <div class="content-card" style="margin-bottom: 24px;">
+                        <div class="card-header">
+                            <h2>Daily School Hours</h2>
+                            <button class="btn btn-primary btn-sm" onclick="AdminApp.saveTimings()">Save All Timings</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="grid-2">
+                                <div class="form-group">
+                                    <label for="summerHours">Summer Hours</label>
+                                    <input type="text" id="summerHours" placeholder="7:30 AM to 1:00 PM">
+                                </div>
+                                <div class="form-group">
+                                    <label for="winterHours">Winter Hours</label>
+                                    <input type="text" id="winterHours" placeholder="10:00 AM to 4:00 PM">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <!-- Summer Bell Schedule -->
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h2>☀️ Summer Bell Schedule</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="summerScheduleRaw">Schedule (Label | Time | Duration)</label>
+                                    <textarea id="summerScheduleRaw" rows="12" placeholder="Assembly | 7:30 AM to 7:55 AM | 25 min"></textarea>
+                                    <p class="help-text">Format: Name | Time | Duration. Use "Recess" or "Break" in name for highlighted rows.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Winter Bell Schedule -->
+                        <div class="content-card">
+                            <div class="card-header">
+                                <h2>❄️ Winter Bell Schedule</h2>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="winterScheduleRaw">Schedule (Label | Time | Duration)</label>
+                                    <textarea id="winterScheduleRaw" rows="12" placeholder="Assembly | 10:00 AM to 10:25 AM | 25 min"></textarea>
+                                    <p class="help-text">Format: Name | Time | Duration. One per line.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-card" style="margin-top: 24px;">
+                        <div class="card-header">
+                            <h2>🤝 Visiting Hours</h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="visitingHoursRaw">Visiting Slots (Label | Time)</label>
+                                <textarea id="visitingHoursRaw" rows="6" placeholder="Administrator | 8:00 AM to 2:00 PM"></textarea>
                             </div>
                         </div>
                     </div>

@@ -520,6 +520,44 @@ The school provides students with the benefits of a modern education system. It 
                     '📚 New STEM Lab inaugurated with cutting-edge equipment.'
                 ],
                 lastUpdated: new Date().toISOString()
+            },
+            schoolTimings: {
+                summer: {
+                    periods: [
+                        { label: 'Assembly', time: '7:30 AM to 7:55 AM', duration: '25 min' },
+                        { label: '1st Period', time: '7:55 AM to 8:40 AM', duration: '45 min' },
+                        { label: '2nd Period', time: '8:40 AM to 9:20 AM', duration: '40 min' },
+                        { label: '3rd Period', time: '9:20 AM to 10:00 AM', duration: '40 min' },
+                        { label: 'Recess', time: '10:00 AM to 10:25 AM', duration: '25 min', isBreak: true },
+                        { label: '4th Period', time: '10:25 AM to 11:05 AM', duration: '40 min' },
+                        { label: '5th Period', time: '11:05 AM to 11:45 AM', duration: '40 min' },
+                        { label: '6th Period', time: '11:45 AM to 12:25 PM', duration: '40 min' },
+                        { label: '7th Period', time: '12:25 PM to 1:00 PM', duration: '35 min' }
+                    ],
+                    schoolHours: '7:30 AM to 1:00 PM'
+                },
+                winter: {
+                    periods: [
+                        { label: 'Assembly', time: '10:00 AM to 10:25 AM', duration: '25 min' },
+                        { label: '1st Period', time: '10:25 AM to 11:05 AM', duration: '40 min' },
+                        { label: '2nd Period', time: '11:05 AM to 11:45 AM', duration: '40 min' },
+                        { label: '3rd Period', time: '11:45 AM to 12:25 PM', duration: '40 min' },
+                        { label: 'Recess', time: '12:25 PM to 12:50 PM', duration: '25 min', isBreak: true },
+                        { label: '4th Period', time: '12:50 PM to 1:30 PM', duration: '40 min' },
+                        { label: '5th Period', time: '1:30 PM to 2:10 PM', duration: '40 min' },
+                        { label: '6th Period', time: '2:10 PM to 2:50 PM', duration: '40 min' },
+                        { label: '7th Period', time: '2:50 PM to 3:30 PM', duration: '40 min' },
+                        { label: '8th Period', time: '3:30 PM to 4:00 PM', duration: '30 min' }
+                    ],
+                    schoolHours: '10:00 AM to 4:00 PM'
+                },
+                visitingHours: [
+                    { label: 'Administrator', time: '8:00 AM to 2:00 PM' },
+                    { label: 'Principal', time: '8:00 AM to 2:00 PM' },
+                    { label: 'Office Hours', time: '8:00 AM to 3:00 PM' },
+                    { label: 'Lunch Break', time: '10:20 AM to 10:45 AM', isBreak: true }
+                ],
+                lastUpdated: new Date().toISOString()
             }
         };
     },
