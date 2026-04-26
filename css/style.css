@@ -11,20 +11,20 @@
 }
 
 :root {
-    --primary-color: #C62828; /* Deep Red from Logo */
-    --primary-dark: #A51D1D;
-    --secondary-color: #F4C430; /* Golden Yellow from Logo */
-    --accent-color: #F4C430; 
-    --accent-dark: #D4A017;
-    --text-dark: #2E2E2E; /* Dark Charcoal */
-    --text-light: #555555;
-    --white: #FFFFFF;
-    --light-bg: #FFF8E1; /* Soft Cream Background */
-    --border-color: #E0E0E0;
-    --success-color: #2E7D32;
-    --error-color: #D32F2F;
-    --gold: #F4C430;
-    --topbar-bg: #9E2020; /* Slightly darker red for depth */
+    --primary-color: #0f172a; /* Prestige Navy */
+    --primary-dark: #020617;
+    --secondary-color: #1e293b;
+    --accent-color: #b91c1c; /* Apex Crimson for Buttons */
+    --accent-dark: #991b1b;
+    --text-dark: #111827;
+    --text-light: #4b5563;
+    --white: #ffffff;
+    --light-bg: #f8fafc; /* Crisp clean background */
+    --border-color: #e2e8f0;
+    --success-color: #15803d;
+    --error-color: #b91c1c;
+    --gold: #eab308; /* Saffron Gold for icons */
+    --topbar-bg: #020617;
 }
 
 html {
@@ -129,7 +129,7 @@ img {
 .brand-bar {
     background: var(--white);
     padding: 12px 0;
-    border-bottom: 4px solid var(--accent-color);
+    border-bottom: 4px solid var(--accent-color); /* Crimson brand accent */
 }
 
 .brand-bar-content {
@@ -279,7 +279,7 @@ header {
     top: 0;
     z-index: 1000;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border-bottom: 2px solid var(--accent-color); /* Add the Gold underline for modern touch */
+    border-bottom: 3px solid var(--gold); /* Gold highlight under navigation */
 }
 
 .header-content {
@@ -597,10 +597,10 @@ nav ul li a.active {
     display: inline-block;
     padding: 14px 30px;
     background: var(--accent-color);
-    color: var(--text-dark); /* Charcoal text for high contrast on yellow */
+    color: var(--white); /* White text on Crimson red buttons */
     text-decoration: none;
     border-radius: 8px;
-    font-weight: 700;
+    font-weight: 600;
     font-size: 1rem;
     transition: all 0.3s ease;
     border: none;
@@ -614,7 +614,7 @@ nav ul li a.active {
 .btn:hover {
     transform: translateY(-3px);
     background: var(--accent-dark);
-    box-shadow: 0 10px 25px rgba(244, 196, 48, 0.4);
+    box-shadow: 0 10px 25px rgba(185, 28, 28, 0.3);
 }
 
 .btn:focus-visible {
@@ -1679,7 +1679,7 @@ footer {
 /* CTA Banner               */
 /* ======================== */
 .cta-banner {
-    background: linear-gradient(135deg, var(--primary-color), #8B1A1A);
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     padding: 50px 0;
     text-align: center;
     color: var(--white);
