@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Nunito:wght@400;500;600;700&display=swap');
 /* ============================================
    APEX INTERNATIONAL SCHOOL - ADMIN PORTAL CSS
    Premium Dark Theme with Glassmorphism
@@ -33,7 +34,7 @@
     --bg-input: rgba(255, 255, 255, 0.05);
 
     /* Text */
-    --text-primary: #e2e8f0;
+    --text-primary: #dde4ed;
     --text-secondary: #94a3b8;
     --text-muted: #64748b;
     --text-accent: #c9a84c;
@@ -82,7 +83,7 @@ html {
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
     background: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
@@ -225,7 +226,7 @@ img {
     border-radius: var(--radius-sm);
     color: var(--text-primary);
     font-size: 0.9375rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
     transition: all var(--transition-fast);
     outline: none;
 }
@@ -322,7 +323,7 @@ img {
     padding: 12px 24px;
     font-size: 0.875rem;
     font-weight: 600;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
     border: none;
     border-radius: var(--radius-sm);
     cursor: pointer;
@@ -804,7 +805,7 @@ img {
     border-radius: var(--radius-sm);
     color: var(--text-primary);
     font-size: 0.875rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
     outline: none;
     transition: all var(--transition-fast);
 }
@@ -1521,7 +1522,7 @@ img {
 
 .editor-container .ql-container {
     border: none;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
     font-size: 0.9375rem;
     color: var(--text-primary);
     min-height: 200px;
@@ -1645,7 +1646,7 @@ img {
     border-radius: var(--radius-sm);
     color: var(--text-primary);
     font-size: 0.875rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
     outline: none;
     transition: all var(--transition-fast);
 }
@@ -1676,7 +1677,7 @@ img {
     border-radius: var(--radius-sm);
     color: var(--text-primary);
     font-size: 0.875rem;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
     outline: none;
     cursor: pointer;
     appearance: none;
@@ -1760,7 +1761,7 @@ img {
     cursor: pointer;
     position: relative;
     white-space: nowrap;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
     transition: color var(--transition-fast);
 }
 
@@ -2526,3 +2527,5 @@ img {
     padding: 4px 8px;
     font-size: 0.7rem;
 }
+
+h1, h2, h3 { font-family: 'Merriweather', Georgia, serif; }

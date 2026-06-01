@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Nunito:wght@400;500;600;700&display=swap');
 /* Apex International School - Main Stylesheet */
 /* Mobile-First Responsive Design with WCAG Compliance */
 
@@ -11,20 +12,20 @@
 }
 
 :root {
-    --primary-color: #0f172a; /* Prestige Navy */
-    --primary-dark: #020617;
-    --secondary-color: #1e293b;
-    --accent-color: #b91c1c; /* Apex Crimson for Buttons */
-    --accent-dark: #991b1b;
-    --text-dark: #111827;
-    --text-light: #4b5563;
+    --primary-color: #1a3a5c; /* Prestige Navy */
+    --primary-dark: #0f2340;
+    --secondary-color: #1e4d7b;
+    --accent-color: #c0392b; /* Apex Crimson for Buttons */
+    --accent-dark: #a93226;
+    --text-dark: #1a1a2e;
+    --text-light: #5a6a7a;
     --white: #ffffff;
-    --light-bg: #f8fafc; /* Crisp clean background */
-    --border-color: #e2e8f0;
+    --light-bg: #f4f7fb; /* Crisp clean background */
+    --border-color: #dde4ed;
     --success-color: #15803d;
-    --error-color: #b91c1c;
-    --gold: #eab308; /* Saffron Gold for icons */
-    --topbar-bg: #020617;
+    --error-color: #c0392b;
+    --gold: #d4a017; /* Saffron Gold for icons */
+    --topbar-bg: #0f2340;
 }
 
 html {
@@ -33,7 +34,7 @@ html {
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Nunito', 'Segoe UI', sans-serif;
     line-height: 1.6;
     color: var(--text-dark);
     background-color: var(--white);
@@ -2680,3 +2681,5 @@ body.menu-open {
     color: var(--accent-dark);
     transform: translateX(4px);
 }
+
+h1, h2, h3 { font-family: 'Merriweather', Georgia, serif; }
