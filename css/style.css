@@ -2297,3 +2297,386 @@ body.menu-open {
         gap: 24px;
     }
 }@media (max-width: 768px) { .map-container iframe { height: 300px; } } .map-container { width: 100%; margin-top: 20px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); } .map-container iframe { width: 100%; height: 450px; display: block; }
+
+/* ======================================= */
+/* Curriculum & Academics Enhancements     */
+/* ======================================= */
+.curriculum-desc {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.curriculum-subjects-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 6px;
+}
+
+/* ======================================= */
+/* Specialized Lab Sections                */
+/* ======================================= */
+.facilities-detail {
+    background: var(--light-bg);
+    padding: 60px 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.lab-details-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+@media (min-width: 768px) {
+    .lab-details-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.lab-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.lab-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--gold));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.lab-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+    border-color: rgba(226, 232, 240, 1);
+}
+
+.lab-card:hover::before {
+    opacity: 1;
+}
+
+.lab-card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.lab-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(185, 28, 28, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--accent-color);
+}
+
+.lab-card-header h3 {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.lab-card-body p {
+    color: var(--text-light);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    text-align: justify;
+}
+
+/* ======================================= */
+/* Sports and Games Highlights             */
+/* ======================================= */
+.sports-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+    color: var(--white);
+    position: relative;
+    overflow: hidden;
+}
+
+.sports-section::after {
+    content: '';
+    position: absolute;
+    bottom: -150px;
+    right: -150px;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: rgba(185, 28, 28, 0.05);
+    pointer-events: none;
+}
+
+.sports-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+@media (min-width: 992px) {
+    .sports-content {
+        grid-template-columns: 1.4fr 0.8fr;
+        gap: 60px;
+    }
+}
+
+.sports-badge {
+    background: rgba(234, 179, 8, 0.15);
+    color: var(--gold);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(234, 179, 8, 0.25);
+    text-transform: uppercase;
+}
+
+.sports-text h2 {
+    font-size: 2.2rem;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    color: var(--white);
+}
+
+.sports-text p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.sports-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+@media (max-width: 576px) {
+    .sports-stats {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+.sports-stat-item {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 24px 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.sports-stat-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(234, 179, 8, 0.3);
+    transform: translateY(-3px);
+}
+
+.sports-stat-item .stat-number {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 6px;
+    line-height: 1;
+}
+
+.sports-stat-item .stat-label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ======================================= */
+/* School Transportation Service           */
+/* ======================================= */
+.transport-section {
+    padding: 60px 0;
+    background: var(--white);
+}
+
+.transport-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+@media (min-width: 992px) {
+    .transport-grid {
+        grid-template-columns: 1fr 1.2fr;
+    }
+}
+
+.transport-info-card, 
+.transport-guidelines-card {
+    background: var(--white);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.03);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    height: fit-content;
+}
+
+.transport-info-card .transport-card-header,
+.transport-guidelines-card .transport-card-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    padding: 24px 30px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--white);
+}
+
+.transport-info-card .transport-card-header .transport-icon,
+.transport-guidelines-card .transport-card-header .transport-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.transport-info-card .transport-card-header h3,
+.transport-guidelines-card .transport-card-header h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.transport-info-card .transport-card-body,
+.transport-guidelines-card .transport-card-body {
+    padding: 30px;
+}
+
+.transport-info-card .transport-card-body p {
+    color: var(--text-light);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+.transport-contact-box {
+    background: rgba(185, 28, 28, 0.02);
+    border: 1px dashed rgba(185, 28, 28, 0.25);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.transport-contact-box h4 {
+    color: var(--accent-color);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.transport-contact-box p {
+    font-size: 0.92rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 12px !important;
+    color: var(--text-light);
+}
+
+.transport-phone {
+    display: inline-flex;
+    align-items: center;
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.2rem;
+    transition: color 0.3s;
+    background: var(--white);
+    padding: 8px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(185, 28, 28, 0.08);
+    border: 1px solid rgba(185, 28, 28, 0.1);
+}
+
+.transport-phone:hover {
+    color: var(--accent-dark);
+    box-shadow: 0 4px 12px rgba(185, 28, 28, 0.15);
+}
+
+.guidelines-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.guidelines-list li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.bullet-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    color: var(--white);
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 3px 6px rgba(185, 28, 28, 0.2);
+}
+
+.guideline-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--text-light);
+}
+
+/* Facility Card Link Style */
+.facility-card-link {
+    display: inline-block;
+    margin-top: 16px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.facility-card-link:hover {
+    color: var(--accent-dark);
+    transform: translateX(4px);
+}
